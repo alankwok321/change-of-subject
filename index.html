@@ -1,0 +1,656 @@
+<title>Change of Subject</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Patrick+Hand&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
+<script>try{document.documentElement.dataset.lang=(localStorage.getItem('cos-lang')==='zh'?'zh':'en')}catch(e){document.documentElement.dataset.lang='en'}</script>
+<style>
+/* Layout: a classroom page — paper surface for teaching text, a dark-green chalkboard "stage" where equations animate, working lines written below like an exercise book. */
+:root{
+  --paper:#EEF3F0; --surface:#FFFFFF; --ink:#18241F; --muted:#56675F; --line:#D2DDD7;
+  --board:#1D3A31; --board-2:#244639; --chalk:#EEF3EA; --chalk-dim:#A8BEB3;
+  --hl:#F4C24E; --pen:#C3384A; --ok:#2B8452; --accent:#226B57; --accent-soft:#DCEBE4;
+  --f-display:"Bricolage Grotesque","PingFang HK","Microsoft JhengHei",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","PingFang HK","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-math:"STIX Two Text","Cambria Math","Times New Roman",serif;
+  --f-chalk:"Patrick Hand","PingFang HK","Microsoft JhengHei",cursive;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0F1513; --surface:#17201C; --ink:#E3ECE7; --muted:#93A69D; --line:#2A3832;
+  --board:#16302A; --board-2:#1C3B32; --chalk:#EEF3EA; --chalk-dim:#9DB3A8;
+  --hl:#F4C24E; --pen:#F07487; --ok:#5DC48B; --accent:#6CC1A6; --accent-soft:#1D332B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0F1513; --surface:#17201C; --ink:#E3ECE7; --muted:#93A69D; --line:#2A3832;
+  --board:#16302A; --board-2:#1C3B32; --chalk:#EEF3EA; --chalk-dim:#9DB3A8;
+  --hl:#F4C24E; --pen:#F07487; --ok:#5DC48B; --accent:#6CC1A6; --accent-soft:#1D332B; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:980px;margin:0 auto}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+p{margin:0}
+i{font-style:italic}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+
+/* header */
+.top{padding-block:28px 18px;display:grid;gap:8px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.top h1{font-size:clamp(32px,6vw,52px);font-weight:800;letter-spacing:-.01em}
+.top p{color:var(--muted);max-width:62ch}
+
+/* tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);display:flex;gap:6px;padding-block:10px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 16px;font-weight:700;white-space:nowrap;display:flex;gap:8px;align-items:center}
+.tab b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:13px}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.tab[aria-selected="true"] b{background:var(--surface);color:var(--accent)}
+.panel{padding-block:24px;display:grid;gap:36px}
+
+/* concept */
+.sec{display:grid;gap:14px}
+.sec h2{font-size:clamp(22px,3.4vw,28px);font-weight:800}
+.sec > p{max-width:65ch}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:720px){.two{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px;min-width:0}
+.formula{font-family:var(--f-math);font-size:26px;display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.subj{background:var(--hl);color:#1d1a10;border-radius:6px;padding:0 6px}
+.tag{font-family:var(--f-body);font-size:13px;color:var(--muted)}
+.muted{color:var(--muted)}
+
+.btnrow{display:flex;flex-wrap:wrap;gap:8px}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 14px;font-weight:700;font-size:15px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* balance */
+.bal-eq{font-family:var(--f-math);font-size:30px;text-align:center}
+#bal{width:100%;max-width:440px;margin:0 auto;display:block}
+#bal .beam{fill:var(--accent)}
+#bal .stand{fill:var(--muted)}
+#bal .str{stroke:var(--muted);stroke-width:1.2}
+#bal .plate{fill:var(--muted)}
+#bal .unit rect{fill:var(--hl);stroke:#8a6a17;stroke-width:1}
+#bal .xbox rect{fill:var(--accent)}
+#bal text{font-family:var(--f-math);font-size:13px;fill:#1d1a10;text-anchor:middle;dominant-baseline:central}
+#bal .xbox text{fill:var(--surface);font-style:italic;font-size:18px}
+#bal .blk{transition:opacity .45s, transform .45s}
+#bal .blk.gone{opacity:0;transform:translateY(-26px)}
+.verdict{text-align:center;font-weight:700;min-height:1.6em}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--pen)}
+
+/* machine */
+.mach{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));align-items:center;gap:4px 0;row-gap:18px}
+.st,.opb{justify-self:center;display:grid;place-items:center;font-family:var(--f-math);font-size:22px;min-width:48px;height:48px;border-radius:10px}
+.st{background:var(--accent-soft);color:var(--accent);font-style:italic}
+.opb{border:2px dashed var(--accent);padding:0 8px;background:var(--surface)}
+.opb.rev{border-color:var(--pen);color:var(--pen)}
+.arw{height:2px;background:var(--muted);position:relative}
+.arw::after{content:"";position:absolute;right:-1px;top:-5px;border:6px solid transparent;border-left:8px solid var(--muted);border-right:0}
+.arw.l::after{right:auto;left:-1px;border-left:0;border-right:8px solid var(--pen)}
+.arw.l{background:var(--pen)}
+.ball{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:var(--hl);color:#1d1a10;display:grid;place-items:center;font-family:var(--f-math);font-weight:600;font-size:18px;opacity:0;transition:transform .6s cubic-bezier(.6,.05,.25,1),opacity .3s;box-shadow:0 2px 8px rgb(0 0 0 / .25);pointer-events:none}
+.analogy{border-left:4px solid var(--hl);padding:4px 0 4px 14px;color:var(--muted)}
+
+/* table & rules */
+.inv{width:100%;border-collapse:collapse;font-size:15px}
+.inv th,.inv td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left}
+.inv th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.inv td.m{font-family:var(--f-math);font-size:20px}
+.rules{display:grid;gap:10px;padding:0;margin:0;list-style:none;counter-reset:r}
+.rules li{counter-increment:r;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start}
+.rules li::before{content:counter(r);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--surface);font-weight:700}
+.mist{display:grid;gap:10px}
+.mist div{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-family:var(--f-math);font-size:20px}
+.mist .x{color:var(--pen);text-decoration:line-through;text-decoration-thickness:2px}
+.mist .y{color:var(--ok)}
+.mist small{font-family:var(--f-body);font-size:14px;color:var(--muted)}
+
+/* board / stage */
+.board{background:radial-gradient(120% 90% at 20% 0%,var(--board-2),var(--board));color:var(--chalk);border-radius:16px;padding:18px 18px 16px;border:6px solid #6b4f33;display:grid;gap:10px;box-shadow:inset 0 0 40px rgb(0 0 0 / .25)}
+.board-q{font-family:var(--f-chalk);font-size:20px;color:var(--chalk-dim);line-height:1.3}
+.stage{position:relative;font-family:var(--f-math);font-size:clamp(28px,6.5vw,48px);min-height:2.6em;display:grid;place-items:center;overflow-x:auto;overflow-y:hidden;padding:8px 0}
+.eqn{display:inline-flex;align-items:center;white-space:nowrap}
+.side{display:inline-flex;align-items:center}
+.tk{display:inline-block;transition:color .5s}
+.tk.s{margin-left:.2em}
+.sg{margin-right:.18em;font-style:normal}
+.eqs{margin:0 .38em}
+.sup{font-size:.6em;position:relative;top:-.72em;margin-left:.04em}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .1em;font-size:.8em}
+.fr .nu,.fr .de{display:inline-flex;align-items:center;padding:0 .15em}
+.bar{display:block;align-self:stretch;height:2px;background:currentColor;transform-origin:left center;margin:.12em 0}
+.sq{display:inline-flex;align-items:stretch}
+.rad{font-size:1.1em;align-self:center;line-height:1}
+.ra{display:inline-flex;align-items:center;border-top:2px solid currentColor;padding:.12em .12em 0}
+.chg{color:var(--hl)!important}
+.ghost{position:absolute;display:flex;align-items:center;justify-content:center;pointer-events:none;margin:0;white-space:nowrap}
+.ghost.sup{top:auto}
+.board-note{font-family:var(--f-chalk);font-size:20px;color:var(--hl);text-align:center;min-height:1.4em}
+
+.lesson{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:820px){.lesson{grid-template-columns:1fr}}
+.col{display:grid;gap:14px;min-width:0}
+.why{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:6px}
+.why h3{font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.why p{font-size:17px}
+
+.book{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 18px;
+  background-image:repeating-linear-gradient(to bottom,transparent 0 47px,var(--line) 47px 48px);background-position:0 12px}
+.book h3{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-family:var(--f-body)}
+.book ol{list-style:none;margin:0;padding:0;display:grid}
+.book li{min-height:48px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:2px 12px;font-family:var(--f-math);font-size:22px;color:#2a47a8;padding:4px 0}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .book li{color:#9fb6ff}}
+:root[data-theme="dark"] .book li{color:#9fb6ff}
+.book li .eqn{white-space:nowrap}
+.book li .fr{font-size:.72em}
+.book .wn{font-family:var(--f-body);font-size:13px;color:var(--muted)}
+.book .ther{display:inline-block;width:1.2em}
+.book li.new{animation:inkIn .6s ease-out}
+@keyframes inkIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+
+.picker{display:flex;flex-wrap:wrap;gap:8px}
+.pick{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 12px;display:flex;align-items:center;gap:10px;min-height:52px}
+.pick .lbl{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.pick .f{font-family:var(--f-math);font-size:18px}
+.pick .f .fr{font-size:.7em}
+.pick[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ctrl .count{margin-left:auto;font-size:14px;color:var(--chalk-dim);font-variant-numeric:tabular-nums}
+.bbtn{border:1px solid rgb(255 255 255 / .25);background:rgb(255 255 255 / .08);color:var(--chalk);border-radius:10px;padding:8px 14px;font-weight:700;font-size:15px}
+.bbtn:hover{background:rgb(255 255 255 / .16)}
+.bbtn.go{background:var(--hl);color:#1d1a10;border-color:var(--hl)}
+.bbtn:disabled{opacity:.35;cursor:not-allowed}
+
+/* practice */
+.levels{display:flex;flex-wrap:wrap;gap:8px}
+.lv{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 14px;text-align:left;display:grid}
+.lv b{font-size:15px} .lv span{font-size:13px;color:var(--muted)}
+.lv[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.lv[aria-pressed="true"] span{color:var(--surface);opacity:.85}
+.prog{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.dot{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-weight:700;font-variant-numeric:tabular-nums}
+.dot.done{background:var(--ok);border-color:var(--ok);color:var(--surface)}
+.dot[aria-current="true"]{box-shadow:0 0 0 3px var(--hl)}
+.score{margin-left:auto;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ask{font-weight:700;font-size:17px}
+.opts{display:grid;gap:8px}
+.opt{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:16px}
+.opt .k{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--accent-soft);color:var(--accent);font-weight:700}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.bad{border-color:var(--pen);color:var(--pen);animation:shake .35s}
+.opt.bad .k{background:var(--pen);color:var(--surface)}
+.opt.good{border-color:var(--ok);color:var(--ok)}
+.opt.good .k{background:var(--ok);color:var(--surface)}
+.opt:disabled{cursor:default}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+.fb{min-height:1.5em;font-size:16px}
+.fb.bad{color:var(--pen);font-family:var(--f-chalk);font-size:19px}
+.fb.ok{color:var(--ok);font-weight:700}
+.hint{background:var(--accent-soft);border-radius:12px;padding:12px 14px;font-size:15px}
+.answer{border:2px solid var(--ok);border-radius:14px;padding:14px 18px;display:grid;gap:8px;background:var(--surface)}
+.answer .f{font-family:var(--f-math);font-size:26px}
+.answer .f .fr{font-size:.75em}
+.answer b{color:var(--ok)}
+/* language switch */
+:root:not([data-lang="zh"]):not([data-lang="both"]) .t-zh{display:none!important}
+:root[data-lang="zh"] .t-en{display:none!important}
+:root[data-lang="both"] .t-en + .t-zh:not(.zs){margin-left:.45em}
+:root[data-lang="both"] .zs{display:block;opacity:.78;font-size:.92em;margin-top:2px}
+:root[data-lang="both"] .top h1 .t-zh{display:block;font-size:.5em;font-weight:600;color:var(--muted);margin:6px 0 0}
+:root[data-lang="both"] .sec h2 .t-zh{font-size:.7em;color:var(--muted);font-weight:600}
+:root[data-lang="both"] .board-note .t-zh{color:var(--chalk-dim);font-size:.85em}
+.tabs{align-items:center}
+.lang{margin-left:auto;display:inline-flex;flex:none;border:1px solid var(--line);border-radius:999px;background:var(--surface);padding:3px;gap:2px}
+.lang button{border:0;background:transparent;border-radius:999px;padding:6px 12px;font-weight:700;font-size:14px;color:var(--muted);white-space:nowrap}
+.lang button:hover{color:var(--ink)}
+.lang button[aria-checked="true"]{background:var(--ink);color:var(--paper)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow"><span class="t-en">S2–S3 Mathematics</span><span class="t-zh">中二至中三數學</span></div>
+    <h1><span class="t-en">Change of Subject</span><span class="t-zh">公式的主項變換</span></h1>
+  </header>
+
+  <nav class="tabs" aria-label="Lesson parts">
+    <button class="tab" role="tab" id="t-ideas" data-tab="ideas" aria-selected="true"><b>1</b><span class="t-en">Key ideas</span><span class="t-zh">概念</span></button>
+    <button class="tab" role="tab" id="t-examples" data-tab="examples" aria-selected="false"><b>2</b><span class="t-en">Worked examples</span><span class="t-zh">例題</span></button>
+    <button class="tab" role="tab" id="t-practice" data-tab="practice" aria-selected="false"><b>3</b><span class="t-en">Practice</span><span class="t-zh">練習</span></button>
+    <div class="lang" role="radiogroup" aria-label="Language 語言">
+      <button role="radio" id="lang-en" data-lang="en" aria-checked="true">EN</button>
+      <button role="radio" id="lang-zh" data-lang="zh" aria-checked="false">中文</button>
+    </div>
+  </nav>
+
+  <!-- ===== IDEAS ===== -->
+  <section class="panel" id="ideas" role="tabpanel">
+    <div class="sec">
+      <h2><span class="t-en">What is the subject?</span><span class="t-zh">甚麼是主項？</span></h2>
+      <p><span class="t-en">The <b>subject</b> is the letter standing alone on the left. <b>Changing the subject</b> means making another letter stand alone.</span><span class="t-zh zs"><b>主項</b>是單獨在左邊的字母。<b>主項變換</b>就是使另一個字母單獨留下。</span></p>
+      <div class="two">
+        <div class="card">
+          <div class="formula"><span><span class="subj"><i>v</i></span> = <i>u</i> + <i>a</i><i>t</i></span></div>
+          <div class="tag"><span class="t-en">Subject is <i>v</i></span><span class="t-zh">主項是 <i>v</i></span></div>
+        </div>
+        <div class="card">
+          <div class="formula"><span><span class="subj"><i>a</i></span> = </span><span class="eqn" style="font-size:26px"><span class="fr"><span class="nu"><i>v</i>&nbsp;−&nbsp;<i>u</i></span><span class="bar"></span><span class="de"><i>t</i></span></span></span></div>
+          <div class="tag"><span class="t-en">Same formula, subject is now <i>a</i></span><span class="t-zh">同一條公式，主項變為 <i>a</i></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2><span class="t-en">Keep the balance</span><span class="t-zh">保持平衡</span></h2>
+      <p><span class="t-en">Do the same to both sides to keep it balanced. Green box = <i>x</i>, each yellow block = 1.</span><span class="t-zh zs">兩邊做相同的運算，才能保持平衡。綠色盒子 = <i>x</i>，每個黃色方塊 = 1。</span></p>
+      <div class="card">
+        <div class="bal-eq" id="balEq"><i>x</i> + 3 = 7</div>
+        <svg id="bal" viewBox="0 0 360 215" role="img" aria-label="A balance with x plus 3 blocks on the left and 7 blocks on the right">
+          <rect x="140" y="200" width="80" height="8" rx="3" class="stand"/>
+          <path d="M180 82 L162 200 L198 200 Z" class="stand"/>
+          <g id="panL"></g><g id="panR"></g>
+          <g id="beamG"><rect x="56" y="76" width="248" height="8" rx="4" class="beam"/><circle cx="180" cy="80" r="6" class="stand"/></g>
+        </svg>
+        <div class="verdict" id="balV"></div>
+        <div class="btnrow" style="justify-content:center">
+          <button class="btn primary" id="balBoth"><span class="t-en">Take 3 from both pans</span><span class="t-zh">兩邊同時減 3</span></button>
+          <button class="btn" id="balLeft"><span class="t-en">Take 3 from the left only</span><span class="t-zh">只在左邊減 3</span></button>
+          <button class="btn" id="balReset"><span class="t-en">Reset</span><span class="t-zh">重設</span></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2><span class="t-en">Undo in reverse order</span><span class="t-zh">逆運算，次序倒轉</span></h2>
+      <p><span class="t-en">Undo the operations in reverse order, last one first.</span><span class="t-zh zs">用逆運算，由最後一步開始倒轉還原。</span></p>
+      <div class="card">
+        <div class="mach" id="mach">
+          <div class="st" id="m0" style="grid-column:1;grid-row:1">x</div><div class="arw" style="grid-column:2;grid-row:1"></div>
+          <div class="opb" id="m1" style="grid-column:3;grid-row:1">× 3</div><div class="arw" style="grid-column:4;grid-row:1"></div>
+          <div class="opb" id="m2" style="grid-column:5;grid-row:1">+ 5</div><div class="arw" style="grid-column:6;grid-row:1"></div>
+          <div class="st" id="m3" style="grid-column:7;grid-row:1">y</div>
+          <div class="st" id="r3" style="grid-column:1;grid-row:2">x</div><div class="arw l" style="grid-column:2;grid-row:2"></div>
+          <div class="opb rev" id="r2" style="grid-column:3;grid-row:2">÷ 3</div><div class="arw l" style="grid-column:4;grid-row:2"></div>
+          <div class="opb rev" id="r1" style="grid-column:5;grid-row:2">− 5</div><div class="arw l" style="grid-column:6;grid-row:2"></div>
+          <div class="st" id="r0" style="grid-column:7;grid-row:2">y</div>
+          <div class="ball" id="ball">2</div>
+        </div>
+        <div class="btnrow">
+          <button class="btn primary" id="runF"><span class="t-en">Run forwards</span><span class="t-zh">順序運算</span> (<i>x</i> = 2)</button>
+          <button class="btn" id="runB"><span class="t-en">Run backwards</span><span class="t-zh">倒轉還原</span> (<i>y</i> = 11)</button>
+        </div>
+        <p class="analogy"><span class="t-en">Socks first, then shoes. To take them off, shoes come off first.</span><span class="t-zh zs">先穿襪，後穿鞋；脫的時候先脫鞋，後脫襪。</span></p>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2><span class="t-en">Rules to remember</span><span class="t-zh">記住這些規則</span></h2>
+      <div class="two">
+        <div class="card">
+          <table class="inv">
+            <thead><tr><th><span class="t-en">Operation</span><span class="t-zh">運算</span></th><th><span class="t-en">Undo with</span><span class="t-zh">逆運算</span></th></tr></thead>
+            <tbody>
+              <tr><td class="m">+ <i>a</i></td><td class="m">− <i>a</i></td></tr>
+              <tr><td class="m">− <i>a</i></td><td class="m">+ <i>a</i></td></tr>
+              <tr><td class="m">× <i>a</i></td><td class="m">÷ <i>a</i></td></tr>
+              <tr><td class="m">÷ <i>a</i></td><td class="m">× <i>a</i></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <ol class="rules">
+            <li><span><span class="t-en">Do the <b>same operation to both sides</b>.</span><span class="t-zh zs"><b>兩邊做相同的運算</b>。</span></span></li>
+            <li><span><span class="t-en">Undo the operations in <b>reverse order</b>: usually + and − first, then × and ÷.</span><span class="t-zh zs">以<b>倒轉的次序</b>還原：通常先處理 + 和 −，再處理 × 和 ÷。</span></span></li>
+            <li><span><span class="t-en">Write the new subject <b>alone on the left</b>.</span><span class="t-zh zs">把新的主項<b>單獨寫在左邊</b>。</span></span></li>
+          </ol>
+          <p class="muted" style="font-size:15px"><span class="t-en"><b>Shortcut (移項變號):</b> when a term moves across the = sign, + becomes − and × becomes ÷.</span><span class="t-zh zs"><b>移項變號：</b>一項越過等號時，+ 變 −，× 變 ÷。</span></p>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:17px"><span class="t-en">Common mistakes</span><span class="t-zh">常見錯誤</span></h3>
+        <div class="mist">
+          <div><span class="x"><i>x</i> = <i>y</i> − 5 ÷ 3</span><span class="y"><i>x</i> = (<i>y</i> − 5) ÷ 3</span><small><span class="t-en">Divide the whole side, not just one term.</span><span class="t-zh">要除整邊，不是只除一項。</span></small></div>
+          <div><span class="x"><i>y</i> = 5 − 2<i>x</i> ⇒ <i>x</i> = (<i>y</i> − 5) ÷ 2</span><small><span class="t-en">Keep the sign: divide by −2.</span><span class="t-zh">保留負號：要除以 −2。</span></small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXAMPLES ===== -->
+  <section class="panel" id="examples" role="tabpanel" hidden>
+    <div class="sec">
+      <h2><span class="t-en">Worked examples</span><span class="t-zh">例題</span></h2>
+      <div class="picker" id="exPick"></div>
+    </div>
+    <div class="lesson">
+      <div class="col">
+        <div class="board">
+          <div class="board-q" id="exQ"></div>
+          <div class="stage" id="exStage"><span class="eqn"></span></div>
+          <div class="board-note" id="exNote"></div>
+          <div class="ctrl">
+            <button class="bbtn" id="exPrev">◀ <span class="t-en">Back</span><span class="t-zh">上一步</span></button>
+            <button class="bbtn go" id="exNext"><span class="t-en">Next</span><span class="t-zh">下一步</span> ▶</button>
+            <button class="bbtn" id="exPlay"></button>
+            <button class="bbtn" id="exReset"><span class="t-en">Restart</span><span class="t-zh">重新開始</span></button>
+            <span class="count" id="exCount"></span>
+          </div>
+        </div>
+        <div class="why"><h3><span class="t-en">Teacher says</span><span class="t-zh">老師話你知</span></h3><p id="exWhy"></p></div>
+      </div>
+      <div class="book"><h3><span class="t-en">Working</span><span class="t-zh">步驟</span></h3><ol id="exBook"></ol></div>
+    </div>
+  </section>
+
+  <!-- ===== PRACTICE ===== -->
+  <section class="panel" id="practice" role="tabpanel" hidden>
+    <div class="sec">
+      <h2><span class="t-en">Practice</span><span class="t-zh">練習</span></h2>
+      <div class="levels" id="lvls"></div>
+      <div class="prog"><div class="prog" id="dots"></div><span class="score" id="score"></span></div>
+    </div>
+    <div class="lesson">
+      <div class="col">
+        <div class="board">
+          <div class="board-q" id="prQ"></div>
+          <div class="stage" id="prStage"><span class="eqn"></span></div>
+          <div class="board-note" id="prNote"></div>
+          <div class="ctrl">
+            <button class="bbtn" id="prHint"><span class="t-en">Hint</span><span class="t-zh">提示</span></button>
+            <button class="bbtn" id="prShow"><span class="t-en">Show me</span><span class="t-zh">示範</span></button>
+            <button class="bbtn" id="prReset"><span class="t-en">Try again</span><span class="t-zh">再試一次</span></button>
+          </div>
+        </div>
+        <div id="prHintBox" class="hint" hidden></div>
+        <div id="prAskWrap" class="col">
+          <div class="ask" id="prAsk"><span class="t-en">What should you do next?</span><span class="t-zh">下一步應該做甚麼？</span></div>
+          <div class="opts" id="prOpts"></div>
+          <div class="fb" id="prFb" aria-live="polite"></div>
+        </div>
+        <div class="answer" id="prAns" hidden></div>
+      </div>
+      <div class="book"><h3><span class="t-en">Working</span><span class="t-zh">步驟</span></h3><ol id="prBook"></ol></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(()=>{
+const $=(s,r=document)=>r.querySelector(s);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const DUR=reduce?0:700;
+const L=(en,zh)=>`<span class="t-en">${en}</span><span class="t-zh">${zh}</span>`;
+const LS=(en,zh)=>`<span class="t-en">${en}</span><span class="t-zh zs">${zh}</span>`;
+
+/* ---------- language ---------- */
+function setLang(l){const root=document.documentElement;root.dataset.lang=l;root.lang=l==='zh'?'zh-HK':'en';
+  try{localStorage.setItem('cos-lang',l);}catch(e){}
+  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-checked',b.dataset.lang===l));}
+document.querySelectorAll('.lang button').forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
+setLang(['en','zh'].includes(document.documentElement.dataset.lang)?document.documentElement.dataset.lang:'en');
+
+/* ---------- tokens ---------- */
+function tok(s){if(typeof s!=='string')return s;const i=s.lastIndexOf('#');let t=s,id=s;if(i>0){t=s.slice(0,i);id=s.slice(i+1);}return {k:'t',t,id};}
+const F=(num,den,id='bar')=>({k:'f',num,den,id});
+const Q=(a,id='rad')=>({k:'q',a,id});
+function fmt(t){let s=t.replace(/&/g,'&amp;').replace(/</g,'&lt;');s=s.replace(/[A-Za-z]/g,m=>`<i>${m}</i>`);s=s.replace(/^([+−]) ?/,'<span class="sg">$1</span>');return s;}
+function R(arr,ids){return arr.map(x=>{x=tok(x);const d=ids?` data-id="${x.id}"`:'';
+  if(x.k==='f')return `<span class="fr"><span class="nu">${R(x.num,ids)}</span><span class="bar"${d}></span><span class="de">${R(x.den,ids)}</span></span>`;
+  if(x.k==='q')return `<span class="sq"><span class="tk rad"${d}>√</span><span class="ra">${R(x.a,ids)}</span></span>`;
+  if(x.t.startsWith('^'))return `<span class="tk sup"${d}>${fmt(x.t.slice(1))}</span>`;
+  const s=/^[+−]/.test(x.t)?' s':'';return `<span class="tk${s}"${d}>${fmt(x.t)}</span>`;}).join('');}
+function line(st,ids){return `<span class="eqn"><span class="side">${R(st.L,ids)}</span><span class="tk eqs"${ids?' data-id="eq"':''}>=</span><span class="side">${R(st.R,ids)}</span></span>`;}
+
+/* ---------- animated paint (FLIP) ---------- */
+function paint(stage,st,animate){
+  const sr=stage.getBoundingClientRect();const old=new Map();
+  if(animate&&!reduce)stage.querySelectorAll('.eqn [data-id]').forEach(el=>old.set(el.dataset.id,{r:el.getBoundingClientRect(),h:el.innerHTML,c:el.className,fs:getComputedStyle(el).fontSize}));
+  stage.querySelectorAll('.ghost').forEach(g=>g.remove());
+  stage.innerHTML=line(st,true);
+  if(!animate||reduce)return;
+  const seen=new Set();
+  stage.querySelectorAll('.eqn [data-id]').forEach(el=>{
+    const id=el.dataset.id;seen.add(id);const o=old.get(id);const r=el.getBoundingClientRect();
+    if(o){const dx=o.r.left-r.left,dy=o.r.top-r.top;const isBar=el.classList.contains('bar');const sx=isBar&&r.width?o.r.width/r.width:1;
+      const fsr=parseFloat(o.fs)/parseFloat(getComputedStyle(el).fontSize)||1;const sc=isBar?`scaleX(${sx})`:(Math.abs(fsr-1)>.02?`scale(${fsr})`:'');
+      if(Math.abs(dx)>.5||Math.abs(dy)>.5||sc)el.animate([{transform:`translate(${dx}px,${dy}px) ${sc}`,transformOrigin:'left top'},{transform:'none',transformOrigin:'left top'}],{duration:DUR,easing:'cubic-bezier(.6,.05,.25,1)'});
+      if(o.h!==el.innerHTML||o.c!==el.className){el.classList.add('chg');setTimeout(()=>el.classList.remove('chg'),1500);}
+    }else{const isBar=el.classList.contains('bar');
+      el.animate([{opacity:0,transform:isBar?'scaleX(0)':'translateY(-16px)'},{opacity:1,transform:'none'}],{duration:DUR*.7,delay:DUR*.5,easing:'ease-out',fill:'backwards'});}
+  });
+  old.forEach((o,id)=>{if(seen.has(id))return;const g=document.createElement('span');g.className='ghost '+o.c;g.innerHTML=o.h;
+    Object.assign(g.style,{left:(o.r.left-sr.left+stage.scrollLeft)+'px',top:(o.r.top-sr.top)+'px',width:o.r.width+'px',height:o.r.height+'px',fontSize:o.fs});
+    stage.appendChild(g);g.animate([{opacity:1},{opacity:0,transform:'translateY(18px) scale(.6)'}],{duration:DUR*.8,easing:'ease-in',fill:'forwards'}).onfinish=()=>g.remove();});
+  stage.querySelectorAll('.ra').forEach(el=>{const rad=el.previousElementSibling;if(rad&&!old.has(rad.dataset.id))el.animate([{borderTopColor:'transparent'},{borderTopColor:'currentColor'}],{duration:DUR,delay:DUR*.4,fill:'backwards'});});
+}
+
+/* ---------- worked examples ---------- */
+const EX=[
+ {subj:'x',steps:[
+  {L:['y'],R:['3#c3','x','+ 5#k5'],why:['Read it like a machine: start with x, multiply by 3, then add 5 to get y. To find x, undo these in reverse order.','把公式看成一部機器：x 先乘 3，再加 5，得到 y。要求 x，就要以倒轉的次序還原這些運算。']},
+  {L:['y','− 5#k5'],R:['3#c3','x'],n:'Subtract 5 from both sides|兩邊減 5',why:['The last thing done to x was “+ 5”, so undo it first. Subtract 5 from both sides. Watch +5 jump across the = sign and become −5 (移項變號).','x 最後做的運算是「+ 5」，所以先還原它：兩邊減 5。留意 +5 越過等號後變成 −5（移項變號）。']},
+  {L:[F(['y','− 5#k5'],['3#c3'])],R:['x'],n:'Divide both sides by 3|兩邊除以 3',why:['3x means 3 × x. Undo “× 3” by dividing both sides by 3. The whole of y − 5 goes on top of the fraction.','3x 即 3 × x。兩邊除以 3，還原「× 3」。整個 y − 5 都要放在分子。']},
+  {L:['x'],R:[F(['y','− 5#k5'],['3#c3'])],n:'Write x on the left|把主項寫在左邊',why:['Swap the two sides so the new subject x is on the left. Done!','左右對調，把新的主項 x 寫在左邊。完成！'],fin:1}]},
+ {subj:'a',steps:[
+  {L:['v'],R:['u','+#p','a','t'],why:['Here a is multiplied by t, then u is added. Undo the “+ u” first.','a 先乘以 t，再加上 u。所以先還原「+ u」。']},
+  {L:['v','− u#u'],R:['a','t'],n:'Subtract u from both sides|兩邊減 u',why:['Subtract u from both sides. u moves to the left side and becomes −u.','兩邊減 u。u 移到左邊後變成 −u。']},
+  {L:[F(['v','− u#u'],['t'])],R:['a'],n:'Divide both sides by t|兩邊除以 t',why:['at means a × t. Divide both sides by t to leave a by itself.','at 即 a × t。兩邊除以 t，a 便單獨留下。']},
+  {L:['a'],R:[F(['v','− u#u'],['t'])],n:'Write a on the left|把主項寫在左邊',why:['Put the new subject a on the left-hand side.','把新的主項 a 寫在左邊。'],fin:1}]},
+ {subj:'l',steps:[
+  {L:['P'],R:['2#c','(#lp','l','+ w#w',')#rp'],why:['l has w added, then the bracket is multiplied by 2. Undo × 2 first.','l 先加 w，然後整個括號乘以 2。所以先還原「× 2」。']},
+  {L:[F(['P'],['2#c'])],R:['l','+ w#w'],n:'Divide both sides by 2|兩邊除以 2',why:['Divide both sides by 2. The 2 and the brackets disappear from the right.','兩邊除以 2，右邊的 2 和括號便消失。']},
+  {L:[F(['P'],['2#c']),'− w#w'],R:['l'],n:'Subtract w from both sides|兩邊減 w',why:['Undo “+ w” by subtracting w from both sides.','兩邊減 w，還原「+ w」。']},
+  {L:['l'],R:[F(['P'],['2#c']),'− w#w'],n:'Write l on the left|把主項寫在左邊',why:['Put l on the left. That is the answer.','把 l 寫在左邊，這就是答案。'],fin:1}]},
+ {subj:'x',steps:[
+  {L:['y'],R:[F(['x','+ 4#k4'],['3#c3'])],why:['x has 4 added, then the whole thing is divided by 3. The division was done last, so undo it first.','x 先加 4，然後整體除以 3。除法是最後做的，所以先還原它。']},
+  {L:['3#c3','y'],R:['x','+ 4#k4'],n:'Multiply both sides by 3|兩邊乘以 3',why:['Multiply both sides by 3. The fraction bar disappears and the 3 moves to the left as 3y.','兩邊乘以 3，分數線消失，3 移到左邊成為 3y。']},
+  {L:['3#c3','y','− 4#k4'],R:['x'],n:'Subtract 4 from both sides|兩邊減 4',why:['Now undo “+ 4” by subtracting 4 from both sides.','然後兩邊減 4，還原「+ 4」。']},
+  {L:['x'],R:['3#c3','y','− 4#k4'],n:'Write x on the left|把主項寫在左邊',why:['Swap sides. x = 3y − 4.','左右對調，得 x = 3y − 4。'],fin:1}]}
+];
+
+/* ---------- practice bank ---------- */
+const W=(en,zh,fb,fz)=>({en,zh,fb,fz});
+const P=[
+ {lvl:1,subj:'s',hint:['s → × 4 → P. Undo × 4 with ÷ 4.','s → × 4 → P。用 ÷ 4 還原 × 4。'],steps:[
+  {L:['P'],R:['4#c','s']},
+  {L:[F(['P'],['4#c'])],R:['s'],n:'Divide both sides by 4|兩邊除以 4',w:[W('Subtract 4 from both sides','兩邊減 4','4s means 4 × s. Subtracting 4 will not remove it.','4s 即 4 × s，減 4 不能把它消去。'),W('Multiply both sides by 4','兩邊乘以 4','That gives 4P = 16s, and s is still not alone.','這樣會得到 4P = 16s，s 仍未單獨留下。')]},
+  {L:['s'],R:[F(['P'],['4#c'])],swap:1}]},
+ {lvl:1,subj:'x',hint:['x → − 7 → y. Undo − 7 with + 7.','x → − 7 → y。用 + 7 還原 − 7。'],steps:[
+  {L:['y'],R:['x','− 7#k']},
+  {L:['y','+ 7#k'],R:['x'],n:'Add 7 to both sides|兩邊加 7',w:[W('Subtract 7 from both sides','兩邊減 7','That gives x − 14. To undo − 7 you need the inverse, + 7.','這樣會變成 x − 14。− 7 的逆運算是 + 7。'),W('Divide both sides by 7','兩邊除以 7','7 is subtracted from x, not multiplied.','7 是從 x 減去的，不是相乘。')]},
+  {L:['x'],R:['y','+ 7#k'],swap:1}]},
+ {lvl:1,subj:'b',hint:['lb means l × b. Undo × l with ÷ l.','lb 即 l × b。用 ÷ l 還原 × l。'],steps:[
+  {L:['A'],R:['l','b']},
+  {L:[F(['A'],['l'])],R:['b'],n:'Divide both sides by l|兩邊除以 l',w:[W('Subtract l from both sides','兩邊減 l','lb means l × b. Undo multiplication with division.','lb 即 l × b。乘法要用除法還原。'),W('Divide both sides by b','兩邊除以 b','That would remove b, but b is the letter we want to keep.','這樣會把 b 消去，但 b 正是我們要保留的字母。')]},
+  {L:['b'],R:[F(['A'],['l'])],swap:1}]},
+ {lvl:1,subj:'x',hint:['x → × 4 → − 9 → y. Undo in reverse: + 9 first, then ÷ 4.','x → × 4 → − 9 → y。倒轉次序：先 + 9，再 ÷ 4。'],steps:[
+  {L:['y'],R:['4#c','x','− 9#k']},
+  {L:['y','+ 9#k'],R:['4#c','x'],n:'Add 9 to both sides|兩邊加 9',w:[W('Divide both sides by 4','兩邊除以 4','Allowed, but then every term must be divided by 4 and it gets messy. Clear the constant term first, since it was done last.','可以，但每一項都要除以 4，比較麻煩。常數項是最後做的，應先處理。'),W('Subtract 9 from both sides','兩邊減 9','To undo − 9 you need + 9.','要還原 − 9，應該 + 9。')]},
+  {L:[F(['y','+ 9#k'],['4#c'])],R:['x'],n:'Divide both sides by 4|兩邊除以 4',w:[W('Subtract 4 from both sides','兩邊減 4','4x means 4 × x. Undo it with ÷ 4.','4x 即 4 × x，要用 ÷ 4 還原。'),W('Multiply both sides by 4','兩邊乘以 4','That makes 16x. Use the inverse, ÷ 4.','這樣會變成 16x。要用逆運算 ÷ 4。')]},
+  {L:['x'],R:[F(['y','+ 9#k'],['4#c'])],swap:1}]},
+
+ {lvl:2,subj:'r',hint:['2πr means 2 × π × r. Divide by the whole multiplier 2π.','2πr 即 2 × π × r。要除以整個乘數 2π。'],steps:[
+  {L:['C'],R:['2#c','π#pi','r']},
+  {L:[F(['C'],['2#c','π#pi'])],R:['r'],n:'Divide both sides by 2π|兩邊除以 2π',w:[W('Divide both sides by 2 only','只把兩邊除以 2','Then πr is left. Divide by all of 2π at once.','這樣仍剩下 πr。應一次過除以 2π。'),W('Subtract 2π from both sides','兩邊減 2π','2πr is a product. Undo multiplication with division.','2πr 是乘積，乘法要用除法還原。')]},
+  {L:['r'],R:[F(['C'],['2#c','π#pi'])],swap:1}]},
+ {lvl:2,subj:'h',hint:['Clear the fraction first (× 2), then divide by b.','先清除分數（× 2），再除以 b。'],steps:[
+  {L:['A'],R:[F(['b','h'],['2#c'])]},
+  {L:['2#c','A'],R:['b','h'],n:'Multiply both sides by 2|兩邊乘以 2',w:[W('Divide both sides by b','兩邊除以 b','Possible, but clearing the fraction first is neater. Remove the ÷ 2 first.','可以，但先清除分數會較整齊。先還原 ÷ 2。'),W('Subtract 2 from both sides','兩邊減 2','The 2 is dividing, not added. Undo ÷ with ×.','2 是除數，不是加上去的。÷ 要用 × 還原。')]},
+  {L:[F(['2#c','A'],['b'])],R:['h'],n:'Divide both sides by b|兩邊除以 b',w:[W('Subtract b from both sides','兩邊減 b','bh means b × h. Undo it with ÷ b.','bh 即 b × h，要用 ÷ b 還原。'),W('Divide both sides by h','兩邊除以 h','We want to keep h, not remove it.','我們要保留 h，不是消去它。')]},
+  {L:['h'],R:[F(['2#c','A'],['b'])],swap:1}]},
+ {lvl:2,subj:'x',hint:['x → × m → + c → y. Undo + c first, then ÷ m.','x → × m → + c → y。先還原 + c，再 ÷ m。'],steps:[
+  {L:['y'],R:['m','x','+ c#c']},
+  {L:['y','− c#c'],R:['m','x'],n:'Subtract c from both sides|兩邊減 c',w:[W('Divide both sides by m','兩邊除以 m','Then c must be divided too. Clear the c term first.','這樣 c 也要除以 m。應先處理 c 項。'),W('Add c to both sides','兩邊加 c','c is added to mx, so subtract c to remove it.','c 是加上去的，要減 c 才能消去。')]},
+  {L:[F(['y','− c#c'],['m'])],R:['x'],n:'Divide both sides by m|兩邊除以 m',w:[W('Subtract m from both sides','兩邊減 m','mx means m × x. Undo it with ÷ m.','mx 即 m × x，要用 ÷ m 還原。'),W('Divide both sides by x','兩邊除以 x','We want to keep x, not remove it.','我們要保留 x，不是消去它。')]},
+  {L:['x'],R:[F(['y','− c#c'],['m'])],swap:1}]},
+ {lvl:2,subj:'x',hint:['The coefficient of x is −2. Remove the 5, divide by −2, then tidy the signs.','x 的係數是 −2。先消去 5，再除以 −2，最後整理正負號。'],steps:[
+  {L:['y'],R:['5#k','− 2#c','x']},
+  {L:['y','− 5#k'],R:['− 2#c','x'],n:'Subtract 5 from both sides|兩邊減 5',w:[W('Add 5 to both sides','兩邊加 5','The 5 is positive here, so subtract 5 to remove it.','這裏的 5 是正數，要減 5 才能消去。'),W('Divide both sides by 2','兩邊除以 2','The coefficient of x is −2, not 2. Watch the sign.','x 的係數是 −2，不是 2。小心正負號。')]},
+  {L:[F(['y','− 5#k'],['− 2#c'])],R:['x'],n:'Divide both sides by −2|兩邊除以 −2',w:[W('Divide both sides by 2','兩邊除以 2','The coefficient is −2. Keep the negative sign.','係數是 −2，要保留負號。'),W('Add 2 to both sides','兩邊加 2','−2x means −2 × x. Undo it with ÷ (−2).','−2x 即 −2 × x，要用 ÷ (−2) 還原。')]},
+  {L:[F(['5#k','− y#y'],['2#c'])],R:['x'],n:'Multiply top and bottom by −1|分子分母同乘 −1',w:[W('Leave it, it cannot be simplified','不用化簡','It is correct, but a negative denominator is untidy. Multiply top and bottom by −1.','答案正確，但分母是負數不夠整齊。分子分母同乘 −1。'),W('Remove the minus sign from the bottom only','只刪去分母的負號','Changing only the denominator changes the value. Change top and bottom together.','只改分母會改變數值，分子分母要一起改。')]},
+  {L:['x'],R:[F(['5#k','− y#y'],['2#c'])],swap:1}]},
+
+ {lvl:3,subj:'x',hint:['x → − b → × a → c. Undo × a first, then + b.','x → − b → × a → c。先還原 × a，再 + b。'],steps:[
+  {L:['a#a','(#lp','x','− b#b',')#rp'],R:['c']},
+  {L:['x','− b#b'],R:[F(['c'],['a#a'])],n:'Divide both sides by a|兩邊除以 a',w:[W('Add b to both sides','兩邊加 b','b is inside the bracket, which is multiplied by a. Divide by a first.','b 在括號內，而整個括號乘以 a。應先除以 a。'),W('Subtract a from both sides','兩邊減 a','a multiplies the bracket. Undo it with ÷ a.','a 乘着括號，要用 ÷ a 還原。')]},
+  {L:['x'],R:[F(['c'],['a#a']),'+ b#b'],n:'Add b to both sides|兩邊加 b',w:[W('Subtract b from both sides','兩邊減 b','To undo − b you need + b.','要還原 − b，應該 + b。'),W('Multiply both sides by a','兩邊乘以 a','That would bring the bracket back. Undo − b with + b.','這樣會把括號變回來。要用 + b 還原 − b。')]}]},
+ {lvl:3,subj:'x',hint:['Clear the fraction (× c), then undo + b, then ÷ a.','先清除分數（× c），再還原 + b，最後 ÷ a。'],steps:[
+  {L:['y'],R:[F(['a#a','x','+ b#b'],['c#c'])]},
+  {L:['c#c','y'],R:['a#a','x','+ b#b'],n:'Multiply both sides by c|兩邊乘以 c',w:[W('Subtract b from both sides','兩邊減 b','b is on top of the fraction. Clear the fraction first.','b 在分子之中，應先清除分數。'),W('Divide both sides by c','兩邊除以 c','c is already dividing. Undo ÷ c with × c.','c 本身已是除數，要用 × c 還原。')]},
+  {L:['c#c','y','− b#b'],R:['a#a','x'],n:'Subtract b from both sides|兩邊減 b',w:[W('Divide both sides by a','兩邊除以 a','Then b must be divided too. Clear the b term first.','這樣 b 也要除以 a。應先處理 b 項。'),W('Add b to both sides','兩邊加 b','b is added, so subtract b to remove it.','b 是加上去的，要減 b 才能消去。')]},
+  {L:[F(['c#c','y','− b#b'],['a#a'])],R:['x'],n:'Divide both sides by a|兩邊除以 a',w:[W('Subtract a from both sides','兩邊減 a','ax means a × x. Undo with ÷ a.','ax 即 a × x，要用 ÷ a 還原。'),W('Divide both sides by c','兩邊除以 c','That would bring the fraction back.','這樣會把分數變回來。')]},
+  {L:['x'],R:[F(['c#c','y','− b#b'],['a#a'])],swap:1}]},
+ {lvl:3,subj:'x',hint:['x appears twice. Collect the x terms → factorize → divide.','x 出現了兩次：集中 x 項 → 抽出公因式 → 除。'],steps:[
+  {L:['p#p','x#x1','− q#q'],R:['r#r','x#x2','+ s#s']},
+  {L:['p#p','x#x1','− r#r','x#x2'],R:['s#s','+ q#q'],n:'Put x terms on the left, the rest on the right|x 項移到左邊，其他項移到右邊',w:[W('Divide both sides by x','兩邊除以 x','x is on both sides; dividing by x does not isolate it.','兩邊都有 x，除以 x 不能使 x 單獨留下。'),W('Divide both sides by p','兩邊除以 p','x would still be on both sides. Collect the x terms first.','x 仍然在兩邊。應先把 x 項集中。')]},
+  {L:['x#x1','(#lp','p#p','− r#r',')#rp'],R:['s#s','+ q#q'],n:'Take out the common factor x|抽出公因式 x',w:[W('Divide both sides by p','兩邊除以 p','x is still in two terms. Factorize first.','x 仍在兩項之中，應先因式分解。'),W('Subtract r from both sides','兩邊減 r','r multiplies x. It is not a separate term.','r 是乘着 x 的，不是獨立的一項。')]},
+  {L:['x#x1'],R:[F(['s#s','+ q#q'],['p#p','− r#r'])],n:'Divide both sides by (p − r)|兩邊除以 (p − r)',w:[W('Divide both sides by p','兩邊除以 p','The whole bracket (p − r) multiplies x.','整個括號 (p − r) 都乘着 x。'),W('Subtract (p − r) from both sides','兩邊減 (p − r)','x(p − r) is a product. Undo it with division.','x(p − r) 是乘積，要用除法還原。')]}]},
+ {lvl:3,subj:'x',hint:['x appears twice. Collect the x terms on one side → factorize → divide.','x 出現了兩次：把 x 項移到同一邊 → 抽出公因式 → 除。'],steps:[
+  {L:['3#c3','x#x1','+ a#a'],R:['b#b','x#x2']},
+  {L:['3#c3','x#x1','− b#b','x#x2'],R:['− a#a'],n:'Put x terms on the left, the rest on the right|x 項移到左邊，其他項移到右邊',w:[W('Divide both sides by x','兩邊除以 x','x is on both sides; dividing by x does not isolate it. Collect the x terms first.','兩邊都有 x，除以 x 不能使 x 單獨留下。應先把 x 項集中。'),W('Subtract 3 from both sides','兩邊減 3','3 multiplies x. It is not a separate term.','3 是乘着 x 的，不是獨立的一項。')]},
+  {L:['x#x1','(#lp','3#c3','− b#b',')#rp'],R:['− a#a'],n:'Take out the common factor x|抽出公因式 x',w:[W('Divide both sides by 3','兩邊除以 3','Then bx ÷ 3 appears, and x is still in two terms. Factorize first.','這樣會出現 bx ÷ 3，x 仍在兩項之中。應先因式分解。'),W('Subtract bx from both sides again','兩邊再減 bx','That is already done. Now combine 3x − bx into one term.','這一步已經做了。現在要把 3x − bx 合成一項。')]},
+  {L:['x#x1'],R:[F(['− a#a'],['3#c3','− b#b'])],n:'Divide both sides by (3 − b)|兩邊除以 (3 − b)',w:[W('Divide both sides by 3','兩邊除以 3','The whole bracket (3 − b) multiplies x.','整個括號 (3 − b) 都乘着 x。'),W('Subtract (3 − b) from both sides','兩邊減 (3 − b)','x(3 − b) is a product. Undo it with division.','x(3 − b) 是乘積，要用除法還原。')]},
+  {L:['x#x1'],R:[F(['a#a'],['b#b','− 3#c3'])],n:'Multiply top and bottom by −1|分子分母同乘 −1',w:[W('Leave it, it cannot be simplified','不用化簡','It is correct, but removing the minus sign from the top is tidier.','答案正確，但去掉分子的負號會更整齊。'),W('Change the sign of the top only','只改分子的正負號','Changing only the numerator changes the value.','只改分子會改變數值。')]}]},
+];
+const LV={1:['Level 1','第一級','Basic · one or two steps','基礎 · 一至兩步'],2:['Level 2','第二級','Further · fractions, π, signs','進階 · 分數、π、正負號'],3:['Level 3','第三級','Challenge · brackets, x twice','挑戰 · 括號、x 出現兩次']};
+
+const split=n=>{const [en,zh]=(n||'').split('|');return {en,zh};};
+const noteHTML=n=>{if(!n)return L('Given','已知');const {en,zh}=split(n);return L(en,zh);};
+const qHTML=it=>{const f=line(it.steps[0],false),nt=it.note?' '+it.note:'';
+  return LS(`Make <i>${it.subj}</i> the subject of the formula ${f}${nt}.`,`試把公式 ${f}${nt} 的主項變換為 <i>${it.subj}</i>。`);};
+function bookLine(st,i,last){const {en,zh}=split(st.n);
+  return `<li${last?' class="new"':''}><span><span class="ther">${st.fin||st.swap?'∴':''}</span>${line(st,false)}</span><span class="wn">${i?LS(`(${en})`,`(${zh})`):L('(Given)','(已知)')}</span></li>`;}
+
+/* ---------- tabs ---------- */
+const tabs=[...document.querySelectorAll('.tab')];
+function openTab(id){tabs.forEach(t=>{const on=t.dataset.tab===id;t.setAttribute('aria-selected',on);$('#'+t.dataset.tab).hidden=!on;});
+  if(id==='examples')exShow(false);if(id==='practice')prRender(false);}
+tabs.forEach(t=>t.onclick=()=>openTab(t.dataset.tab));
+
+/* ---------- examples controller ---------- */
+const ex={i:0,s:0,timer:null};
+const exStage=$('#exStage');
+const PLAY=L('Play all','自動播放'),PAUSE=L('Pause','暫停');
+$('#exPlay').innerHTML=PLAY;
+$('#exPick').innerHTML=EX.map((e,i)=>`<button class="pick" id="pick${i}" data-i="${i}" aria-pressed="${i===0}"><span class="lbl">${L('Ex '+(i+1),'例 '+(i+1))}</span><span class="f">${line(e.steps[0],false)}</span></button>`).join('');
+$('#exPick').onclick=e=>{const b=e.target.closest('.pick');if(!b)return;stopPlay();ex.i=+b.dataset.i;ex.s=0;
+  document.querySelectorAll('.pick').forEach(p=>p.setAttribute('aria-pressed',p===b));exShow(false);};
+function exShow(anim){const it=EX[ex.i],st=it.steps[ex.s],n=it.steps.length;
+  $('#exQ').innerHTML=qHTML(it);paint(exStage,st,anim);
+  $('#exNote').innerHTML=noteHTML(ex.s?st.n:'');
+  $('#exWhy').innerHTML=LS(st.why[0],st.why[1]);
+  $('#exBook').innerHTML=it.steps.slice(0,ex.s+1).map((s,i)=>bookLine(s,i,anim&&i===ex.s)).join('');
+  $('#exCount').innerHTML=L(`Step ${ex.s} / ${n-1}`,`第 ${ex.s} 步，共 ${n-1} 步`);
+  $('#exPrev').disabled=ex.s===0;$('#exNext').disabled=ex.s===n-1;}
+function stopPlay(){clearInterval(ex.timer);ex.timer=null;$('#exPlay').innerHTML=PLAY;}
+$('#exNext').onclick=()=>{stopPlay();if(ex.s<EX[ex.i].steps.length-1){ex.s++;exShow(true);}};
+$('#exPrev').onclick=()=>{stopPlay();if(ex.s>0){ex.s--;exShow(true);}};
+$('#exReset').onclick=()=>{stopPlay();ex.s=0;exShow(true);};
+$('#exPlay').onclick=()=>{if(ex.timer){stopPlay();return;}
+  if(ex.s===EX[ex.i].steps.length-1){ex.s=0;exShow(true);}
+  $('#exPlay').innerHTML=PAUSE;
+  ex.timer=setInterval(()=>{if(ex.s>=EX[ex.i].steps.length-1){stopPlay();return;}ex.s++;exShow(true);},2400);};
+
+/* ---------- practice controller ---------- */
+let solved=new Set();try{solved=new Set(JSON.parse(localStorage.getItem('cos-solved')||'[]'));}catch(e){}
+const saveSolved=()=>{try{localStorage.setItem('cos-solved',JSON.stringify([...solved]));}catch(e){}};
+const pr={lvl:1,q:0,s:0,opts:[],busy:false,first:0,tries:0,missed:false};
+const prStage=$('#prStage');
+const qsOf=l=>P.map((p,i)=>({p,i})).filter(o=>o.p.lvl===l);
+const scoreHTML=()=>L(`Solved ${solved.size} / ${P.length} · first-try steps ${pr.first}/${pr.tries}`,`已完成 ${solved.size} / ${P.length} 題 · 一次答中 ${pr.first}/${pr.tries} 步`);
+$('#lvls').innerHTML=[1,2,3].map(l=>`<button class="lv" id="lv${l}" data-l="${l}" aria-pressed="${l===1}"><b>${L(LV[l][0],LV[l][1])}</b><span>${L(LV[l][2],LV[l][3])}</span></button>`).join('');
+$('#lvls').onclick=e=>{const b=e.target.closest('.lv');if(!b)return;pr.lvl=+b.dataset.l;pr.q=qsOf(pr.lvl)[0].i;pr.s=0;
+  document.querySelectorAll('.lv').forEach(x=>x.setAttribute('aria-pressed',x===b));prRender(false);};
+$('#dots').onclick=e=>{const b=e.target.closest('.dot');if(!b)return;pr.q=+b.dataset.q;pr.s=0;prRender(false);};
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function makeOpts(){const it=P[pr.q],nx=it.steps[pr.s+1];if(!nx||nx.swap){pr.opts=[];return;}
+  const {en,zh}=split(nx.n);pr.opts=shuffle([{en,zh,ok:1},...nx.w]);}
+function prRender(anim){
+  const it=P[pr.q],st=it.steps[pr.s],last=pr.s===it.steps.length-1;
+  $('#dots').innerHTML=qsOf(pr.lvl).map((o,k)=>`<button class="dot${solved.has(o.i)?' done':''}" data-q="${o.i}" aria-current="${o.i===pr.q}" aria-label="Question ${k+1}">${k+1}</button>`).join('');
+  $('#score').innerHTML=scoreHTML();
+  $('#prQ').innerHTML=qHTML(it);
+  paint(prStage,st,anim);
+  $('#prNote').innerHTML=noteHTML(pr.s?st.n:'');
+  $('#prBook').innerHTML=it.steps.slice(0,pr.s+1).map((s,i)=>bookLine(s,i,anim&&i===pr.s)).join('');
+  $('#prHintBox').hidden=true;$('#prHintBox').innerHTML=LS(it.hint[0],it.hint[1]);
+  if(!anim){$('#prFb').innerHTML='';$('#prFb').className='fb';}
+  if(last){$('#prAskWrap').hidden=true;const a=$('#prAns');a.hidden=false;
+    a.innerHTML=`<b>✔ ${L('Answer','答案')}</b><div class="f">${line(st,false)} ${it.note||''}</div>
+      <div class="btnrow"><button class="btn primary" id="prNextQ">${L('Next question','下一題')} →</button></div>`;
+    $('#prNextQ').onclick=nextQ;return;}
+  $('#prAns').hidden=true;$('#prAskWrap').hidden=false;
+  makeOpts();pr.missed=false;
+  $('#prOpts').innerHTML=pr.opts.map((o,k)=>`<button class="opt" id="opt${k}" data-k="${k}"><span class="k">${'ABC'[k]}</span><span>${LS(o.en,o.zh)}</span></button>`).join('');
+}
+function advance(){const it=P[pr.q];pr.s++;prRender(true);
+  const nx=it.steps[pr.s+1];if(nx&&nx.swap){pr.busy=true;setTimeout(()=>{pr.s++;prRender(true);finish();pr.busy=false;},1300);}
+  else if(pr.s===it.steps.length-1)finish();}
+function finish(){solved.add(pr.q);saveSolved();
+  $('#score').innerHTML=scoreHTML();
+  document.querySelectorAll('.dot').forEach(d=>{if(+d.dataset.q===pr.q)d.classList.add('done');});}
+function nextQ(){const list=qsOf(pr.lvl);const k=list.findIndex(o=>o.i===pr.q);
+  if(k<list.length-1){pr.q=list[k+1].i;}else if(pr.lvl<3){pr.lvl++;pr.q=qsOf(pr.lvl)[0].i;document.querySelectorAll('.lv').forEach(x=>x.setAttribute('aria-pressed',+x.dataset.l===pr.lvl));}else{pr.q=list[0].i;}
+  pr.s=0;prRender(false);}
+$('#prOpts').onclick=e=>{const b=e.target.closest('.opt');if(!b||b.disabled||pr.busy)return;const o=pr.opts[+b.dataset.k];
+  if(o.ok){pr.tries++;if(!pr.missed)pr.first++;b.classList.add('good');
+    document.querySelectorAll('.opt').forEach(x=>x.disabled=true);
+    $('#prFb').className='fb ok';$('#prFb').innerHTML='✔ '+(pr.missed?L('Correct!','答對了！'):L('Correct! First try.','答對了！一次答中。'));
+    pr.busy=true;setTimeout(()=>{pr.busy=false;advance();},450);}
+  else{pr.missed=true;b.classList.add('bad');b.disabled=true;$('#prFb').className='fb bad';$('#prFb').innerHTML='✘ '+LS(o.fb,o.fz);}};
+$('#prHint').onclick=()=>{$('#prHintBox').hidden=!$('#prHintBox').hidden;};
+$('#prReset').onclick=()=>{pr.s=0;prRender(false);};
+$('#prShow').onclick=()=>{if(pr.busy)return;const it=P[pr.q];pr.busy=true;
+  const tick=()=>{if(pr.s>=it.steps.length-1){pr.busy=false;finish();return;}pr.s++;prRender(true);setTimeout(tick,1600);};tick();};
+pr.q=qsOf(1)[0].i;
+
+/* ---------- balance ---------- */
+const bal={th:0,L:[],R:[],raf:0,done:false};
+const NS='http://www.w3.org/2000/svg';
+function blk(g,cls,x,y,w,h,label){const b=document.createElementNS(NS,'g');b.setAttribute('class','blk '+cls);
+  b.innerHTML=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3"/><text x="${x+w/2}" y="${y+h/2}">${label}</text>`;g.appendChild(b);return b;}
+function balBuild(){const pl=$('#panL'),pr_=$('#panR');
+  const pan=`<line class="str" x1="0" y1="0" x2="-46" y2="72"/><line class="str" x1="0" y1="0" x2="46" y2="72"/><rect class="plate" x="-52" y="72" width="104" height="5" rx="2"/>`;
+  pl.innerHTML=pan;pr_.innerHTML=pan;
+  bal.L=[];bal.R=[];
+  blk(pl,'xbox',-44,36,36,36,'x');
+  [[-2,56],[16,56],[-2,38]].forEach(([x,y])=>bal.L.push(blk(pl,'unit',x,y,16,16,'1')));
+  [[-36,56],[-18,56],[0,56],[18,56],[-27,38],[-9,38],[9,38]].forEach(([x,y])=>bal.R.push(blk(pr_,'unit',x,y,16,16,'1')));
+  bal.th=0;bal.done=false;balDraw();
+  $('#balEq').innerHTML='<i>x</i> + 3 = 7';$('#balV').className='verdict';$('#balV').innerHTML=L('Balanced: both sides weigh the same.','平衡：兩邊重量相同。');
+  $('#balBoth').disabled=$('#balLeft').disabled=false;}
+function balDraw(){const t=bal.th*Math.PI/180,c=Math.cos(t),s=Math.sin(t);
+  $('#beamG').setAttribute('transform',`rotate(${bal.th} 180 80)`);
+  $('#panL').setAttribute('transform',`translate(${180-118*c} ${80-118*s})`);
+  $('#panR').setAttribute('transform',`translate(${180+118*c} ${80+118*s})`);}
+function balTo(target){cancelAnimationFrame(bal.raf);const from=bal.th,t0=performance.now(),d=reduce?1:900;
+  const step=now=>{const k=Math.min(1,(now-t0)/d),e=1-Math.pow(1-k,3);bal.th=from+(target-from)*e;balDraw();if(k<1)bal.raf=requestAnimationFrame(step);};bal.raf=requestAnimationFrame(step);}
+function take(both){if(bal.done)return;bal.done=true;$('#balBoth').disabled=$('#balLeft').disabled=true;
+  bal.L.forEach(b=>b.classList.add('gone'));if(both)bal.R.slice(4).forEach(b=>b.classList.add('gone'));
+  setTimeout(()=>{if(both){$('#balEq').innerHTML='<i>x</i> = 4';$('#balV').className='verdict ok';$('#balV').innerHTML='✔ '+L('Still balanced, so x = 4.','仍然平衡，所以 x = 4。');balTo(0);}
+    else{$('#balEq').innerHTML='<i>x</i> <span style="color:var(--pen)">≠</span> 7';$('#balV').className='verdict bad';$('#balV').innerHTML='✘ '+L('Not balanced! Changing one side only breaks the equation.','不平衡！只改變一邊，等式便不再成立。');balTo(13);}},450);}
+$('#balBoth').onclick=()=>take(true);$('#balLeft').onclick=()=>take(false);$('#balReset').onclick=balBuild;
+balBuild();
+
+/* ---------- machine ---------- */
+const ball=$('#ball');let mBusy=false;
+function centre(el){const m=$('#mach').getBoundingClientRect(),r=el.getBoundingClientRect();return [r.left-m.left+r.width/2,r.top-m.top+r.height/2];}
+function run(ids,vals){if(mBusy)return;mBusy=true;ball.style.transition='none';
+  let [x,y]=centre($('#'+ids[0]));ball.style.transform=`translate(${x}px,${y-30}px)`;ball.textContent=vals[0];ball.style.opacity=1;
+  void ball.offsetWidth;ball.style.transition='';let k=1;
+  const go=()=>{if(k>=ids.length){setTimeout(()=>{mBusy=false;},300);return;}
+    const [cx,cy]=centre($('#'+ids[k]));ball.style.transform=`translate(${cx}px,${cy-30}px)`;
+    const v=vals[k];setTimeout(()=>{ball.textContent=v;$('#'+ids[k]).animate([{transform:'scale(1.15)'},{transform:'none'}],{duration:300});k++;go();},reduce?50:700);};
+  setTimeout(go,300);}
+$('#runF').onclick=()=>run(['m0','m1','m2','m3'],[2,6,11,11]);
+$('#runB').onclick=()=>run(['r0','r1','r2','r3'],[11,6,2,2]);
+
+/* ---------- start ---------- */
+const h=(location.hash||'').slice(1);
+openTab(['ideas','examples','practice'].includes(h)?h:'ideas');
+})();
+</script>
