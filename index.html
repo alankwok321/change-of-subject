@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Change of Subject</title>
+<title>Change of Subject: Like Terms</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Patrick+Hand&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&display=swap">
@@ -72,34 +72,6 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--hl);outline-offset:
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 
-/* balance */
-.bal-eq{font-family:var(--f-math);font-size:30px;text-align:center}
-#bal{width:100%;max-width:440px;margin:0 auto;display:block}
-#bal .beam{fill:var(--accent)}
-#bal .stand{fill:var(--muted)}
-#bal .str{stroke:var(--muted);stroke-width:1.2}
-#bal .plate{fill:var(--muted)}
-#bal .unit rect{fill:var(--hl);stroke:#8a6a17;stroke-width:1}
-#bal .xbox rect{fill:var(--accent)}
-#bal text{font-family:var(--f-math);font-size:13px;fill:#1d1a10;text-anchor:middle;dominant-baseline:central}
-#bal .xbox text{fill:var(--surface);font-style:italic;font-size:18px}
-#bal .blk{transition:opacity .45s, transform .45s}
-#bal .blk.gone{opacity:0;transform:translateY(-26px)}
-.verdict{text-align:center;font-weight:700;min-height:1.6em}
-.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--pen)}
-
-/* machine */
-.mach{position:relative;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));align-items:center;gap:4px 0;row-gap:18px}
-.st,.opb{justify-self:center;display:grid;place-items:center;font-family:var(--f-math);font-size:22px;min-width:48px;height:48px;border-radius:10px}
-.st{background:var(--accent-soft);color:var(--accent);font-style:italic}
-.opb{border:2px dashed var(--accent);padding:0 8px;background:var(--surface)}
-.opb.rev{border-color:var(--pen);color:var(--pen)}
-.arw{height:2px;background:var(--muted);position:relative}
-.arw::after{content:"";position:absolute;right:-1px;top:-5px;border:6px solid transparent;border-left:8px solid var(--muted);border-right:0}
-.arw.l::after{right:auto;left:-1px;border-left:0;border-right:8px solid var(--pen)}
-.arw.l{background:var(--pen)}
-.ball{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:var(--hl);color:#1d1a10;display:grid;place-items:center;font-family:var(--f-math);font-weight:600;font-size:18px;opacity:0;transition:transform .6s cubic-bezier(.6,.05,.25,1),opacity .3s;box-shadow:0 2px 8px rgb(0 0 0 / .25);pointer-events:none}
-.analogy{border-left:4px solid var(--hl);padding:4px 0 4px 14px;color:var(--muted)}
 
 /* table & rules */
 .inv{width:100%;border-collapse:collapse;font-size:15px}
@@ -214,14 +186,25 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--hl);outline-offset:
 .lang button{border:0;background:transparent;border-radius:999px;padding:6px 12px;font-weight:700;font-size:14px;color:var(--muted);white-space:nowrap}
 .lang button:hover{color:var(--ink)}
 .lang button[aria-checked="true"]{background:var(--ink);color:var(--paper)}
+.verdict{text-align:center;font-weight:700;min-height:1.6em}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--pen)}
+/* like-term sorter */
+.terms{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;font-family:var(--f-math);font-size:26px;padding:6px 0}
+.term{border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:4px 14px;min-height:52px;font-family:var(--f-math);font-size:26px}
+.term:hover{border-color:var(--accent)}
+.term[aria-pressed="true"]{background:var(--hl);border-color:#8a6a17;color:#1d1a10}
+.term.good{box-shadow:0 0 0 3px var(--ok)}
+.term.bad{box-shadow:0 0 0 3px var(--pen);animation:shake .35s}
+.teq{margin:0 4px}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="eyebrow"><span class="t-en">S2–S3 Mathematics</span><span class="t-zh">中二至中三數學</span></div>
+    <div class="eyebrow"><span class="t-en">S2–S3 Mathematics · Like terms &amp; grouping</span><span class="t-zh">中二至中三數學 · 同類項與抽公因式</span></div>
     <h1><span class="t-en">Change of Subject</span><span class="t-zh">公式的主項變換</span></h1>
+    <p><span class="t-en">When the subject appears more than once: collect the like terms, then group by taking out the common factor.</span><span class="t-zh zs">主項出現多於一次時：先集中同類項，再抽出公因式。</span></p>
   </header>
 
   <nav class="tabs" aria-label="Lesson parts">
@@ -237,91 +220,77 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--hl);outline-offset:
   <!-- ===== IDEAS ===== -->
   <section class="panel" id="ideas" role="tabpanel">
     <div class="sec">
-      <h2><span class="t-en">What is the subject?</span><span class="t-zh">甚麼是主項？</span></h2>
-      <p><span class="t-en">The <b>subject</b> is the letter standing alone on the left. <b>Changing the subject</b> means making another letter stand alone.</span><span class="t-zh zs"><b>主項</b>是單獨在左邊的字母。<b>主項變換</b>就是使另一個字母單獨留下。</span></p>
+      <h2><span class="t-en">When the subject appears more than once</span><span class="t-zh">主項出現多於一次</span></h2>
+      <p><span class="t-en">If the subject is in only one term, undo the operations. If it is in <b>two or more terms</b>, undoing alone will never leave it by itself.</span><span class="t-zh zs">如果主項只在一項之中，用逆運算還原便可。如果主項在<b>兩項或以上</b>，單靠還原不能使它單獨留下。</span></p>
       <div class="two">
         <div class="card">
-          <div class="formula"><span><span class="subj"><i>v</i></span> = <i>u</i> + <i>a</i><i>t</i></span></div>
-          <div class="tag"><span class="t-en">Subject is <i>v</i></span><span class="t-zh">主項是 <i>v</i></span></div>
+          <div class="formula"><span><i>y</i> = 3<span class="subj"><i>x</i></span> + 5</span></div>
+          <div class="tag"><span class="t-en"><i>x</i> appears once → undo the operations</span><span class="t-zh"><i>x</i> 出現一次 → 用逆運算還原</span></div>
         </div>
         <div class="card">
-          <div class="formula"><span><span class="subj"><i>a</i></span> = </span><span class="eqn" style="font-size:26px"><span class="fr"><span class="nu"><i>v</i>&nbsp;−&nbsp;<i>u</i></span><span class="bar"></span><span class="de"><i>t</i></span></span></span></div>
-          <div class="tag"><span class="t-en">Same formula, subject is now <i>a</i></span><span class="t-zh">同一條公式，主項變為 <i>a</i></span></div>
+          <div class="formula"><span><i>a</i><span class="subj"><i>x</i></span> + <i>b</i> = <i>c</i><span class="subj"><i>x</i></span></span></div>
+          <div class="tag"><span class="t-en"><i>x</i> appears twice → collect, group, then divide</span><span class="t-zh"><i>x</i> 出現兩次 → 集中、抽公因式、再除</span></div>
+          <div class="mist"><div><span class="x"><i>x</i> = (<i>cx</i> − <i>b</i>) ÷ <i>a</i></span><small><span class="t-en"><i>x</i> is still on the right.</span><span class="t-zh">右邊仍有 <i>x</i>。</span></small></div></div>
         </div>
       </div>
     </div>
 
     <div class="sec">
-      <h2><span class="t-en">Keep the balance</span><span class="t-zh">保持平衡</span></h2>
-      <p><span class="t-en">Do the same to both sides to keep it balanced. Green box = <i>x</i>, each yellow block = 1.</span><span class="t-zh zs">兩邊做相同的運算，才能保持平衡。綠色盒子 = <i>x</i>，每個黃色方塊 = 1。</span></p>
+      <h2><span class="t-en">Spot the like terms</span><span class="t-zh">找出同類項</span></h2>
+      <p><span class="t-en">Terms that contain the subject are <b>like terms</b>. They must be collected on the same side.</span><span class="t-zh zs">含有主項的項是<b>同類項</b>，要集中在同一邊。</span></p>
       <div class="card">
-        <div class="bal-eq" id="balEq"><i>x</i> + 3 = 7</div>
-        <svg id="bal" viewBox="0 0 360 215" role="img" aria-label="A balance with x plus 3 blocks on the left and 7 blocks on the right">
-          <rect x="140" y="200" width="80" height="8" rx="3" class="stand"/>
-          <path d="M180 82 L162 200 L198 200 Z" class="stand"/>
-          <g id="panL"></g><g id="panR"></g>
-          <g id="beamG"><rect x="56" y="76" width="248" height="8" rx="4" class="beam"/><circle cx="180" cy="80" r="6" class="stand"/></g>
-        </svg>
-        <div class="verdict" id="balV"></div>
+        <div class="ask" id="sortAsk" style="text-align:center"></div>
+        <div class="terms" id="sortTerms"></div>
+        <div class="verdict" id="sortV" aria-live="polite"></div>
         <div class="btnrow" style="justify-content:center">
-          <button class="btn primary" id="balBoth"><span class="t-en">Take 3 from both pans</span><span class="t-zh">兩邊同時減 3</span></button>
-          <button class="btn" id="balLeft"><span class="t-en">Take 3 from the left only</span><span class="t-zh">只在左邊減 3</span></button>
-          <button class="btn" id="balReset"><span class="t-en">Reset</span><span class="t-zh">重設</span></button>
+          <button class="btn primary" id="sortCheck"><span class="t-en">Check</span><span class="t-zh">檢查</span></button>
+          <button class="btn" id="sortNext"><span class="t-en">Next formula</span><span class="t-zh">下一條</span> →</button>
         </div>
       </div>
     </div>
 
     <div class="sec">
-      <h2><span class="t-en">Undo in reverse order</span><span class="t-zh">逆運算，次序倒轉</span></h2>
-      <p><span class="t-en">Undo the operations in reverse order, last one first.</span><span class="t-zh zs">用逆運算，由最後一步開始倒轉還原。</span></p>
-      <div class="card">
-        <div class="mach" id="mach">
-          <div class="st" id="m0" style="grid-column:1;grid-row:1">x</div><div class="arw" style="grid-column:2;grid-row:1"></div>
-          <div class="opb" id="m1" style="grid-column:3;grid-row:1">× 3</div><div class="arw" style="grid-column:4;grid-row:1"></div>
-          <div class="opb" id="m2" style="grid-column:5;grid-row:1">+ 5</div><div class="arw" style="grid-column:6;grid-row:1"></div>
-          <div class="st" id="m3" style="grid-column:7;grid-row:1">y</div>
-          <div class="st" id="r3" style="grid-column:1;grid-row:2">x</div><div class="arw l" style="grid-column:2;grid-row:2"></div>
-          <div class="opb rev" id="r2" style="grid-column:3;grid-row:2">÷ 3</div><div class="arw l" style="grid-column:4;grid-row:2"></div>
-          <div class="opb rev" id="r1" style="grid-column:5;grid-row:2">− 5</div><div class="arw l" style="grid-column:6;grid-row:2"></div>
-          <div class="st" id="r0" style="grid-column:7;grid-row:2">y</div>
-          <div class="ball" id="ball">2</div>
-        </div>
-        <div class="btnrow">
-          <button class="btn primary" id="runF"><span class="t-en">Run forwards</span><span class="t-zh">順序運算</span> (<i>x</i> = 2)</button>
-          <button class="btn" id="runB"><span class="t-en">Run backwards</span><span class="t-zh">倒轉還原</span> (<i>y</i> = 11)</button>
-        </div>
-        <p class="analogy"><span class="t-en">Socks first, then shoes. To take them off, shoes come off first.</span><span class="t-zh zs">先穿襪，後穿鞋；脫的時候先脫鞋，後脫襪。</span></p>
-      </div>
-    </div>
-
-    <div class="sec">
-      <h2><span class="t-en">Rules to remember</span><span class="t-zh">記住這些規則</span></h2>
+      <h2><span class="t-en">Group: take out the common factor</span><span class="t-zh">抽出公因式</span></h2>
+      <p><span class="t-en">Once the like terms are together, take the subject out as a common factor. Now it appears only once.</span><span class="t-zh zs">同類項集中後，把主項當作公因式抽出，它便只出現一次。</span></p>
       <div class="two">
-        <div class="card">
-          <table class="inv">
-            <thead><tr><th><span class="t-en">Operation</span><span class="t-zh">運算</span></th><th><span class="t-en">Undo with</span><span class="t-zh">逆運算</span></th></tr></thead>
-            <tbody>
-              <tr><td class="m">+ <i>a</i></td><td class="m">− <i>a</i></td></tr>
-              <tr><td class="m">− <i>a</i></td><td class="m">+ <i>a</i></td></tr>
-              <tr><td class="m">× <i>a</i></td><td class="m">÷ <i>a</i></td></tr>
-              <tr><td class="m">÷ <i>a</i></td><td class="m">× <i>a</i></td></tr>
-            </tbody>
-          </table>
+        <div class="board">
+          <div class="stage" id="grpStage"><span class="eqn"></span></div>
+          <div class="board-note" id="grpNote"></div>
+          <div class="ctrl">
+            <button class="bbtn" id="grpBack">◀ <span class="t-en">Back</span><span class="t-zh">上一步</span></button>
+            <button class="bbtn go" id="grpNext"><span class="t-en">Next</span><span class="t-zh">下一步</span> ▶</button>
+          </div>
         </div>
+        <div class="card">
+          <h3 style="font-size:17px"><span class="t-en">Like counting apples</span><span class="t-zh">好像數蘋果</span></h3>
+          <div class="formula" style="font-size:20px"><span class="t-en">5 apples − 2 apples = (5 − 2) apples</span><span class="t-zh">5 個蘋果 − 2 個蘋果 = (5 − 2) 個蘋果</span></div>
+          <div class="formula" style="font-size:24px"><span><i>a</i><span class="subj"><i>x</i></span> − <i>c</i><span class="subj"><i>x</i></span> = <span class="subj"><i>x</i></span>(<i>a</i> − <i>c</i>)</span></div>
+          <h3 style="font-size:17px;margin-top:6px"><span class="t-en">Watch for the hidden 1</span><span class="t-zh">小心隱藏的 1</span></h3>
+          <div class="formula" style="font-size:24px"><span><span class="subj"><i>x</i></span> + <i>b</i><span class="subj"><i>x</i></span> = 1<span class="subj"><i>x</i></span> + <i>b</i><span class="subj"><i>x</i></span> = <span class="subj"><i>x</i></span>(1 + <i>b</i>)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h2><span class="t-en">The method</span><span class="t-zh">步驟</span></h2>
+      <div class="two">
         <div class="card">
           <ol class="rules">
-            <li><span><span class="t-en">Do the <b>same operation to both sides</b>.</span><span class="t-zh zs"><b>兩邊做相同的運算</b>。</span></span></li>
-            <li><span><span class="t-en">Undo the operations in <b>reverse order</b>: usually + and − first, then × and ÷.</span><span class="t-zh zs">以<b>倒轉的次序</b>還原：通常先處理 + 和 −，再處理 × 和 ÷。</span></span></li>
-            <li><span><span class="t-en">Write the new subject <b>alone on the left</b>.</span><span class="t-zh zs">把新的主項<b>單獨寫在左邊</b>。</span></span></li>
+            <li><span><span class="t-en"><b>Clear</b> fractions and <b>expand</b> brackets.</span><span class="t-zh zs"><b>清除</b>分數，<b>展開</b>括號。</span></span></li>
+            <li><span><span class="t-en"><b>Collect</b> the subject terms on one side, all other terms on the other.</span><span class="t-zh zs">把主項的同類項<b>集中</b>在一邊，其他項放在另一邊。</span></span></li>
+            <li><span><span class="t-en"><b>Group</b>: take out the subject as a common factor.</span><span class="t-zh zs"><b>抽出公因式</b>：把主項抽出來。</span></span></li>
+            <li><span><span class="t-en"><b>Divide</b> both sides by the whole bracket.</span><span class="t-zh zs">兩邊<b>除以</b>整個括號。</span></span></li>
           </ol>
-          <p class="muted" style="font-size:15px"><span class="t-en"><b>Shortcut (移項變號):</b> when a term moves across the = sign, + becomes − and × becomes ÷.</span><span class="t-zh zs"><b>移項變號：</b>一項越過等號時，+ 變 −，× 變 ÷。</span></p>
+          <p class="muted" style="font-size:15px"><span class="t-en"><b>移項變號:</b> when a term crosses the = sign, + becomes − and − becomes +.</span><span class="t-zh zs"><b>移項變號：</b>一項越過等號時，+ 變 −，− 變 +。</span></p>
         </div>
-      </div>
-      <div class="card">
-        <h3 style="font-size:17px"><span class="t-en">Common mistakes</span><span class="t-zh">常見錯誤</span></h3>
-        <div class="mist">
-          <div><span class="x"><i>x</i> = <i>y</i> − 5 ÷ 3</span><span class="y"><i>x</i> = (<i>y</i> − 5) ÷ 3</span><small><span class="t-en">Divide the whole side, not just one term.</span><span class="t-zh">要除整邊，不是只除一項。</span></small></div>
-          <div><span class="x"><i>y</i> = 5 − 2<i>x</i> ⇒ <i>x</i> = (<i>y</i> − 5) ÷ 2</span><small><span class="t-en">Keep the sign: divide by −2.</span><span class="t-zh">保留負號：要除以 −2。</span></small></div>
+        <div class="card">
+          <h3 style="font-size:17px"><span class="t-en">Common mistakes</span><span class="t-zh">常見錯誤</span></h3>
+          <div class="mist">
+            <div><span class="x"><i>x</i> + <i>bx</i> = <i>x</i>(0 + <i>b</i>)</span><span class="y"><i>x</i>(1 + <i>b</i>)</span><small><span class="t-en"><i>x</i> = 1 × <i>x</i>, so 1 is left.</span><span class="t-zh"><i>x</i> 即 1 × <i>x</i>，剩下 1。</span></small></div>
+            <div><span class="x"><i>ax</i> − <i>cx</i> = <i>x</i>(<i>a</i> + <i>c</i>)</span><span class="y"><i>x</i>(<i>a</i> − <i>c</i>)</span><small><span class="t-en">Keep the sign of each term.</span><span class="t-zh">保留每一項的正負號。</span></small></div>
+            <div><span class="x"><i>x</i> = <i>d</i> ÷ <i>a</i> − <i>c</i></span><span class="y"><i>x</i> = <i>d</i> ÷ (<i>a</i> − <i>c</i>)</span><small><span class="t-en">Divide by the whole bracket.</span><span class="t-zh">要除以整個括號。</span></small></div>
+            <div><span class="x">5<i>x</i> − <i>ax</i> = 4<i>x</i></span><span class="y"><i>x</i>(5 − <i>a</i>)</span><small><span class="t-en"><i>a</i> is a letter, not 1.</span><span class="t-zh"><i>a</i> 是字母，不是 1。</span></small></div>
+          </div>
         </div>
       </div>
     </div>
@@ -437,93 +406,109 @@ function paint(stage,st,animate){
 
 /* ---------- worked examples ---------- */
 const EX=[
+ {subj:'P',steps:[
+  {L:['A'],R:['P#P1','+ P#P2','r#r','t#t'],why:['P appears twice: in P and in Prt. Undoing one step at a time will not work, so group the P terms first.','P 出現了兩次：在 P 和 Prt 之中。逐步還原行不通，要先把 P 項合併。']},
+  {L:['A'],R:['P#P1','(#lp','1#one','+ r#r','t#t',')#rp'],n:'Take out the common factor P|抽出公因式 P',why:['P is the same as P × 1. Take P out of both terms: P + Prt = P(1 + rt). Do not forget the 1!','P 即 P × 1。把 P 從兩項抽出：P + Prt = P(1 + rt)。不要漏掉 1！']},
+  {L:[F(['A'],['1#one','+ r#r','t#t'])],R:['P#P1'],n:'Divide both sides by (1 + rt)|兩邊除以 (1 + rt)',why:['Now P appears only once, multiplied by the bracket. Divide both sides by the whole bracket.','現在 P 只出現一次，乘着整個括號。兩邊除以整個括號。']},
+  {L:['P#P1'],R:[F(['A'],['1#one','+ r#r','t#t'])],n:'Write P on the left|把主項寫在左邊',why:['Swap the two sides so P is on the left. Done!','左右對調，把 P 寫在左邊。完成！'],fin:1}]},
  {subj:'x',steps:[
-  {L:['y'],R:['3#c3','x','+ 5#k5'],why:['Read it like a machine: start with x, multiply by 3, then add 5 to get y. To find x, undo these in reverse order.','把公式看成一部機器：x 先乘 3，再加 5，得到 y。要求 x，就要以倒轉的次序還原這些運算。']},
-  {L:['y','− 5#k5'],R:['3#c3','x'],n:'Subtract 5 from both sides|兩邊減 5',why:['The last thing done to x was “+ 5”, so undo it first. Subtract 5 from both sides. Watch +5 jump across the = sign and become −5 (移項變號).','x 最後做的運算是「+ 5」，所以先還原它：兩邊減 5。留意 +5 越過等號後變成 −5（移項變號）。']},
-  {L:[F(['y','− 5#k5'],['3#c3'])],R:['x'],n:'Divide both sides by 3|兩邊除以 3',why:['3x means 3 × x. Undo “× 3” by dividing both sides by 3. The whole of y − 5 goes on top of the fraction.','3x 即 3 × x。兩邊除以 3，還原「× 3」。整個 y − 5 都要放在分子。']},
-  {L:['x'],R:[F(['y','− 5#k5'],['3#c3'])],n:'Write x on the left|把主項寫在左邊',why:['Swap the two sides so the new subject x is on the left. Done!','左右對調，把新的主項 x 寫在左邊。完成！'],fin:1}]},
- {subj:'a',steps:[
-  {L:['v'],R:['u','+#p','a','t'],why:['Here a is multiplied by t, then u is added. Undo the “+ u” first.','a 先乘以 t，再加上 u。所以先還原「+ u」。']},
-  {L:['v','− u#u'],R:['a','t'],n:'Subtract u from both sides|兩邊減 u',why:['Subtract u from both sides. u moves to the left side and becomes −u.','兩邊減 u。u 移到左邊後變成 −u。']},
-  {L:[F(['v','− u#u'],['t'])],R:['a'],n:'Divide both sides by t|兩邊除以 t',why:['at means a × t. Divide both sides by t to leave a by itself.','at 即 a × t。兩邊除以 t，a 便單獨留下。']},
-  {L:['a'],R:[F(['v','− u#u'],['t'])],n:'Write a on the left|把主項寫在左邊',why:['Put the new subject a on the left-hand side.','把新的主項 a 寫在左邊。'],fin:1}]},
- {subj:'l',steps:[
-  {L:['P'],R:['2#c','(#lp','l','+ w#w',')#rp'],why:['l has w added, then the bracket is multiplied by 2. Undo × 2 first.','l 先加 w，然後整個括號乘以 2。所以先還原「× 2」。']},
-  {L:[F(['P'],['2#c'])],R:['l','+ w#w'],n:'Divide both sides by 2|兩邊除以 2',why:['Divide both sides by 2. The 2 and the brackets disappear from the right.','兩邊除以 2，右邊的 2 和括號便消失。']},
-  {L:[F(['P'],['2#c']),'− w#w'],R:['l'],n:'Subtract w from both sides|兩邊減 w',why:['Undo “+ w” by subtracting w from both sides.','兩邊減 w，還原「+ w」。']},
-  {L:['l'],R:[F(['P'],['2#c']),'− w#w'],n:'Write l on the left|把主項寫在左邊',why:['Put l on the left. That is the answer.','把 l 寫在左邊，這就是答案。'],fin:1}]},
+  {L:['a#a','x#x1','+ b#b'],R:['c#c','x#x2','+ d#d'],why:['x is on both sides. Collect the x terms on one side and everything else on the other.','兩邊都有 x。把 x 項集中在一邊，其他項放在另一邊。']},
+  {L:['a#a','x#x1','− c#c','x#x2'],R:['d#d','− b#b'],n:'x terms to the left, the rest to the right|x 項移到左邊，其他項移到右邊',why:['Subtract cx and b from both sides. Each term changes sign as it crosses the = sign (移項變號): +cx becomes −cx, +b becomes −b.','兩邊減 cx 和 b。每一項越過等號都要變號（移項變號）：+cx 變 −cx，+b 變 −b。']},
+  {L:['x#x1','(#lp','a#a','− c#c',')#rp'],R:['d#d','− b#b'],n:'Take out the common factor x|抽出公因式 x',why:['ax and −cx are like terms. Take out x: ax − cx = x(a − c). Keep the minus sign inside the bracket.','ax 和 −cx 是同類項。抽出 x：ax − cx = x(a − c)。括號內要保留負號。']},
+  {L:['x#x1'],R:[F(['d#d','− b#b'],['a#a','− c#c'])],n:'Divide both sides by (a − c)|兩邊除以 (a − c)',why:['Divide by the whole bracket. x is now alone on the left. Done!','除以整個括號，x 便單獨留在左邊。完成！'],fin:1}]},
  {subj:'x',steps:[
-  {L:['y'],R:[F(['x','+ 4#k4'],['3#c3'])],why:['x has 4 added, then the whole thing is divided by 3. The division was done last, so undo it first.','x 先加 4，然後整體除以 3。除法是最後做的，所以先還原它。']},
-  {L:['3#c3','y'],R:['x','+ 4#k4'],n:'Multiply both sides by 3|兩邊乘以 3',why:['Multiply both sides by 3. The fraction bar disappears and the 3 moves to the left as 3y.','兩邊乘以 3，分數線消失，3 移到左邊成為 3y。']},
-  {L:['3#c3','y','− 4#k4'],R:['x'],n:'Subtract 4 from both sides|兩邊減 4',why:['Now undo “+ 4” by subtracting 4 from both sides.','然後兩邊減 4，還原「+ 4」。']},
-  {L:['x'],R:['3#c3','y','− 4#k4'],n:'Write x on the left|把主項寫在左邊',why:['Swap sides. x = 3y − 4.','左右對調，得 x = 3y − 4。'],fin:1}]}
+  {L:['a#a1','(#lp','x#x1','− 2#k2',')#rp'],R:['b#b','x#x2','+ 5#k5'],why:['x is inside a bracket on the left and in bx on the right. Expand the bracket first so every x term can be seen.','左邊的 x 在括號內，右邊有 bx。先展開括號，才看清所有 x 項。']},
+  {L:['a#a1','x#x1','− 2#k2','a#a2'],R:['b#b','x#x2','+ 5#k5'],n:'Expand the bracket|展開括號',why:['Multiply a into each term: a × x = ax and a × (−2) = −2a.','把 a 乘入每一項：a × x = ax，a × (−2) = −2a。']},
+  {L:['a#a1','x#x1','− b#b','x#x2'],R:['5#k5','+ 2#k2','a#a2'],n:'x terms to the left, the rest to the right|x 項移到左邊，其他項移到右邊',why:['bx moves left and becomes −bx. −2a moves right and becomes +2a.','bx 移到左邊變成 −bx；−2a 移到右邊變成 +2a。']},
+  {L:['x#x1','(#lp','a#a1','− b#b',')#rp'],R:['5#k5','+ 2#k2','a#a2'],n:'Take out the common factor x|抽出公因式 x',why:['ax − bx = x(a − b). x now appears only once.','ax − bx = x(a − b)。現在 x 只出現一次。']},
+  {L:['x#x1'],R:[F(['5#k5','+ 2#k2','a#a2'],['a#a1','− b#b'])],n:'Divide both sides by (a − b)|兩邊除以 (a − b)',why:['Divide by the whole bracket. Done!','除以整個括號。完成！'],fin:1}]},
+ {subj:'x',steps:[
+  {L:['y#y1'],R:[F(['x#x1','+ a#a'],['x#x2','− b#b'])],why:['x is on the top and on the bottom of the fraction. Clear the fraction first.','分子和分母都有 x。先清除分數。']},
+  {L:['y#y1','(#lp','x#x2','− b#b',')#rp'],R:['x#x1','+ a#a'],n:'Multiply both sides by (x − b)|兩邊乘以 (x − b)',why:['The fraction bar disappears. Keep (x − b) in a bracket: all of it multiplies y.','分數線消失。(x − b) 要保留括號：整個括號乘以 y。']},
+  {L:['x#x2','y#y1','− b#b','y#y2'],R:['x#x1','+ a#a'],n:'Expand the bracket|展開括號',why:['y(x − b) = xy − by. Now there is an x term on each side.','y(x − b) = xy − by。現在兩邊各有一個 x 項。']},
+  {L:['x#x2','y#y1','− x#x1'],R:['a#a','+ b#b','y#y2'],n:'x terms to the left, the rest to the right|x 項移到左邊，其他項移到右邊',why:['x moves left as −x. −by moves right as +by.','x 移到左邊變成 −x；−by 移到右邊變成 +by。']},
+  {L:['x#x2','(#lp','y#y1','− 1#one',')#rp'],R:['a#a','+ b#b','y#y2'],n:'Take out the common factor x|抽出公因式 x',why:['xy − x = x(y − 1). x is the same as x × 1, so 1 is left in the bracket.','xy − x = x(y − 1)。x 即 x × 1，所以括號內剩下 1。']},
+  {L:['x#x2'],R:[F(['a#a','+ b#b','y#y2'],['y#y1','− 1#one'])],n:'Divide both sides by (y − 1)|兩邊除以 (y − 1)',why:['Divide by the whole bracket. Done!','除以整個括號。完成！'],fin:1}]}
 ];
 
 /* ---------- practice bank ---------- */
 const W=(en,zh,fb,fz)=>({en,zh,fb,fz});
+const TIDY=[W('Leave it, it cannot be simplified','不用化簡','It is correct, but minus signs on top are untidy. Multiply top and bottom by −1.','答案正確，但分子有負號不夠整齊。分子分母同乘 −1。'),W('Change the signs on the top only','只改分子的正負號','Changing only the top changes the value. Change top and bottom together.','只改分子會改變數值，分子分母要一起改。')];
 const P=[
- {lvl:1,subj:'s',hint:['s → × 4 → P. Undo × 4 with ÷ 4.','s → × 4 → P。用 ÷ 4 還原 × 4。'],steps:[
-  {L:['P'],R:['4#c','s']},
-  {L:[F(['P'],['4#c'])],R:['s'],n:'Divide both sides by 4|兩邊除以 4',w:[W('Subtract 4 from both sides','兩邊減 4','4s means 4 × s. Subtracting 4 will not remove it.','4s 即 4 × s，減 4 不能把它消去。'),W('Multiply both sides by 4','兩邊乘以 4','That gives 4P = 16s, and s is still not alone.','這樣會得到 4P = 16s，s 仍未單獨留下。')]},
-  {L:['s'],R:[F(['P'],['4#c'])],swap:1}]},
- {lvl:1,subj:'x',hint:['x → − 7 → y. Undo − 7 with + 7.','x → − 7 → y。用 + 7 還原 − 7。'],steps:[
-  {L:['y'],R:['x','− 7#k']},
-  {L:['y','+ 7#k'],R:['x'],n:'Add 7 to both sides|兩邊加 7',w:[W('Subtract 7 from both sides','兩邊減 7','That gives x − 14. To undo − 7 you need the inverse, + 7.','這樣會變成 x − 14。− 7 的逆運算是 + 7。'),W('Divide both sides by 7','兩邊除以 7','7 is subtracted from x, not multiplied.','7 是從 x 減去的，不是相乘。')]},
-  {L:['x'],R:['y','+ 7#k'],swap:1}]},
- {lvl:1,subj:'b',hint:['lb means l × b. Undo × l with ÷ l.','lb 即 l × b。用 ÷ l 還原 × l。'],steps:[
-  {L:['A'],R:['l','b']},
-  {L:[F(['A'],['l'])],R:['b'],n:'Divide both sides by l|兩邊除以 l',w:[W('Subtract l from both sides','兩邊減 l','lb means l × b. Undo multiplication with division.','lb 即 l × b。乘法要用除法還原。'),W('Divide both sides by b','兩邊除以 b','That would remove b, but b is the letter we want to keep.','這樣會把 b 消去，但 b 正是我們要保留的字母。')]},
-  {L:['b'],R:[F(['A'],['l'])],swap:1}]},
- {lvl:1,subj:'x',hint:['x → × 4 → − 9 → y. Undo in reverse: + 9 first, then ÷ 4.','x → × 4 → − 9 → y。倒轉次序：先 + 9，再 ÷ 4。'],steps:[
-  {L:['y'],R:['4#c','x','− 9#k']},
-  {L:['y','+ 9#k'],R:['4#c','x'],n:'Add 9 to both sides|兩邊加 9',w:[W('Divide both sides by 4','兩邊除以 4','Allowed, but then every term must be divided by 4 and it gets messy. Clear the constant term first, since it was done last.','可以，但每一項都要除以 4，比較麻煩。常數項是最後做的，應先處理。'),W('Subtract 9 from both sides','兩邊減 9','To undo − 9 you need + 9.','要還原 − 9，應該 + 9。')]},
-  {L:[F(['y','+ 9#k'],['4#c'])],R:['x'],n:'Divide both sides by 4|兩邊除以 4',w:[W('Subtract 4 from both sides','兩邊減 4','4x means 4 × x. Undo it with ÷ 4.','4x 即 4 × x，要用 ÷ 4 還原。'),W('Multiply both sides by 4','兩邊乘以 4','That makes 16x. Use the inverse, ÷ 4.','這樣會變成 16x。要用逆運算 ÷ 4。')]},
-  {L:['x'],R:[F(['y','+ 9#k'],['4#c'])],swap:1}]},
+ {lvl:1,subj:'x',hint:['Both terms on the right contain x. Take out x, then divide by the bracket.','右邊兩項都含有 x。抽出 x，再除以括號。'],steps:[
+  {L:['y#y'],R:['a#a','x#x1','+ b#b','x#x2']},
+  {L:['y#y'],R:['x#x1','(#lp','a#a','+ b#b',')#rp'],n:'Take out the common factor x|抽出公因式 x',w:[W('Divide both sides by a','兩邊除以 a','x would still be in two terms. Group the x terms first.','x 仍在兩項之中。應先合併 x 項。'),W('Subtract a from both sides','兩邊減 a','a multiplies x. It is not a separate term.','a 是乘着 x 的，不是獨立的一項。')]},
+  {L:[F(['y#y'],['a#a','+ b#b'])],R:['x#x1'],n:'Divide both sides by (a + b)|兩邊除以 (a + b)',w:[W('Divide both sides by a','兩邊除以 a','The whole bracket (a + b) multiplies x. Divide by all of it.','整個括號 (a + b) 都乘着 x，要除以整個括號。'),W('Subtract (a + b) from both sides','兩邊減 (a + b)','x(a + b) is a product. Undo multiplication with division.','x(a + b) 是乘積，乘法要用除法還原。')]},
+  {L:['x#x1'],R:[F(['y#y'],['a#a','+ b#b'])],swap:1}]},
+ {lvl:1,subj:'k',hint:['k = k × 1. Take out k and remember the 1.','k 即 k × 1。抽出 k 時要記得那個 1。'],steps:[
+  {L:['T#T'],R:['k#k1','+ k#k2','n#n']},
+  {L:['T#T'],R:['k#k1','(#lp','1#one','+ n#n',')#rp'],n:'Take out the common factor k|抽出公因式 k',w:[W('Take out k, leaving k(0 + n)','抽出 k，得 k(0 + n)','k means 1 × k, so 1 is left behind, not 0.','k 即 1 × k，所以剩下的是 1，不是 0。'),W('Divide both sides by n','兩邊除以 n','k is still in two terms. Group them first.','k 仍在兩項之中，應先合併。')]},
+  {L:[F(['T#T'],['1#one','+ n#n'])],R:['k#k1'],n:'Divide both sides by (1 + n)|兩邊除以 (1 + n)',w:[W('Subtract 1 from both sides','兩邊減 1','1 is inside the bracket that multiplies k. Divide by the whole bracket.','1 在乘着 k 的括號內，要除以整個括號。'),W('Divide both sides by n','兩邊除以 n','The whole bracket (1 + n) multiplies k.','整個括號 (1 + n) 都乘着 k。')]},
+  {L:['k#k1'],R:[F(['T#T'],['1#one','+ n#n'])],swap:1}]},
+ {lvl:1,subj:'x',hint:['x is on both sides. Move ax to the left, then take out x.','兩邊都有 x。把 ax 移到左邊，再抽出 x。'],steps:[
+  {L:['5#c5','x#x1'],R:['a#a','x#x2','+ b#b']},
+  {L:['5#c5','x#x1','− a#a','x#x2'],R:['b#b'],n:'Subtract ax from both sides|兩邊減 ax',w:[W('Divide both sides by 5','兩邊除以 5','x would still be on both sides. Collect the x terms first.','x 仍然在兩邊，應先集中 x 項。'),W('Subtract b from both sides','兩邊減 b','b has no x, so it can stay on the right. Move the x term ax instead.','b 不含 x，可以留在右邊。要移的是 x 項 ax。')]},
+  {L:['x#x1','(#lp','5#c5','− a#a',')#rp'],R:['b#b'],n:'Take out the common factor x|抽出公因式 x',w:[W('Combine 5x − ax into 4x','把 5x − ax 合併成 4x','a is a letter, not 1. 5 − a cannot be worked out, so keep it as (5 − a).','a 是字母，不是 1。5 − a 不能計算，要寫成 (5 − a)。'),W('Divide both sides by 5','兩邊除以 5','x is still in two terms. Factorize first.','x 仍在兩項之中，應先因式分解。')]},
+  {L:['x#x1'],R:[F(['b#b'],['5#c5','− a#a'])],n:'Divide both sides by (5 − a)|兩邊除以 (5 − a)',w:[W('Divide both sides by 5','兩邊除以 5','The whole bracket (5 − a) multiplies x.','整個括號 (5 − a) 都乘着 x。'),W('Subtract (5 − a) from both sides','兩邊減 (5 − a)','x(5 − a) is a product. Undo it with division.','x(5 − a) 是乘積，要用除法還原。')]}]},
+ {lvl:1,subj:'x',hint:['Move x to the left and b to the right. When you factorize, x = 1 × x.','把 x 移到左邊，b 移到右邊。因式分解時，x 即 1 × x。'],steps:[
+  {L:['a#a','x#x1','− b#b'],R:['x#x2']},
+  {L:['a#a','x#x1','− x#x2'],R:['b#b'],n:'Move x to the left and b to the right|x 移到左邊，b 移到右邊',w:[W('Divide both sides by x','兩邊除以 x','Then b ÷ x appears, and x is still not alone. Collect the x terms first.','這樣會出現 b ÷ x，x 仍未單獨留下。應先集中 x 項。'),W('Divide both sides by a','兩邊除以 a','x would still be on both sides. Collect the x terms first.','x 仍然在兩邊，應先集中 x 項。')]},
+  {L:['x#x1','(#lp','a#a','− 1#one',')#rp'],R:['b#b'],n:'Take out the common factor x|抽出公因式 x',w:[W('Take out x, leaving x(a − 0)','抽出 x，得 x(a − 0)','x means 1 × x, so 1 is left behind, not 0.','x 即 1 × x，所以剩下的是 1，不是 0。'),W('Combine ax − x into a','把 ax − x 合併成 a','ax − x is not a. Take out the common factor x instead.','ax − x 不等於 a。應抽出公因式 x。')]},
+  {L:['x#x1'],R:[F(['b#b'],['a#a','− 1#one'])],n:'Divide both sides by (a − 1)|兩邊除以 (a − 1)',w:[W('Divide both sides by a','兩邊除以 a','The whole bracket (a − 1) multiplies x.','整個括號 (a − 1) 都乘着 x。'),W('Add 1 to both sides','兩邊加 1','The 1 is inside the bracket that multiplies x. Divide by the whole bracket.','1 在乘着 x 的括號內，要除以整個括號。')]}]},
 
- {lvl:2,subj:'r',hint:['2πr means 2 × π × r. Divide by the whole multiplier 2π.','2πr 即 2 × π × r。要除以整個乘數 2π。'],steps:[
-  {L:['C'],R:['2#c','π#pi','r']},
-  {L:[F(['C'],['2#c','π#pi'])],R:['r'],n:'Divide both sides by 2π|兩邊除以 2π',w:[W('Divide both sides by 2 only','只把兩邊除以 2','Then πr is left. Divide by all of 2π at once.','這樣仍剩下 πr。應一次過除以 2π。'),W('Subtract 2π from both sides','兩邊減 2π','2πr is a product. Undo multiplication with division.','2πr 是乘積，乘法要用除法還原。')]},
-  {L:['r'],R:[F(['C'],['2#c','π#pi'])],swap:1}]},
- {lvl:2,subj:'h',hint:['Clear the fraction first (× 2), then divide by b.','先清除分數（× 2），再除以 b。'],steps:[
-  {L:['A'],R:[F(['b','h'],['2#c'])]},
-  {L:['2#c','A'],R:['b','h'],n:'Multiply both sides by 2|兩邊乘以 2',w:[W('Divide both sides by b','兩邊除以 b','Possible, but clearing the fraction first is neater. Remove the ÷ 2 first.','可以，但先清除分數會較整齊。先還原 ÷ 2。'),W('Subtract 2 from both sides','兩邊減 2','The 2 is dividing, not added. Undo ÷ with ×.','2 是除數，不是加上去的。÷ 要用 × 還原。')]},
-  {L:[F(['2#c','A'],['b'])],R:['h'],n:'Divide both sides by b|兩邊除以 b',w:[W('Subtract b from both sides','兩邊減 b','bh means b × h. Undo it with ÷ b.','bh 即 b × h，要用 ÷ b 還原。'),W('Divide both sides by h','兩邊除以 h','We want to keep h, not remove it.','我們要保留 h，不是消去它。')]},
-  {L:['h'],R:[F(['2#c','A'],['b'])],swap:1}]},
- {lvl:2,subj:'x',hint:['x → × m → + c → y. Undo + c first, then ÷ m.','x → × m → + c → y。先還原 + c，再 ÷ m。'],steps:[
-  {L:['y'],R:['m','x','+ c#c']},
-  {L:['y','− c#c'],R:['m','x'],n:'Subtract c from both sides|兩邊減 c',w:[W('Divide both sides by m','兩邊除以 m','Then c must be divided too. Clear the c term first.','這樣 c 也要除以 m。應先處理 c 項。'),W('Add c to both sides','兩邊加 c','c is added to mx, so subtract c to remove it.','c 是加上去的，要減 c 才能消去。')]},
-  {L:[F(['y','− c#c'],['m'])],R:['x'],n:'Divide both sides by m|兩邊除以 m',w:[W('Subtract m from both sides','兩邊減 m','mx means m × x. Undo it with ÷ m.','mx 即 m × x，要用 ÷ m 還原。'),W('Divide both sides by x','兩邊除以 x','We want to keep x, not remove it.','我們要保留 x，不是消去它。')]},
-  {L:['x'],R:[F(['y','− c#c'],['m'])],swap:1}]},
- {lvl:2,subj:'x',hint:['The coefficient of x is −2. Remove the 5, divide by −2, then tidy the signs.','x 的係數是 −2。先消去 5，再除以 −2，最後整理正負號。'],steps:[
-  {L:['y'],R:['5#k','− 2#c','x']},
-  {L:['y','− 5#k'],R:['− 2#c','x'],n:'Subtract 5 from both sides|兩邊減 5',w:[W('Add 5 to both sides','兩邊加 5','The 5 is positive here, so subtract 5 to remove it.','這裏的 5 是正數，要減 5 才能消去。'),W('Divide both sides by 2','兩邊除以 2','The coefficient of x is −2, not 2. Watch the sign.','x 的係數是 −2，不是 2。小心正負號。')]},
-  {L:[F(['y','− 5#k'],['− 2#c'])],R:['x'],n:'Divide both sides by −2|兩邊除以 −2',w:[W('Divide both sides by 2','兩邊除以 2','The coefficient is −2. Keep the negative sign.','係數是 −2，要保留負號。'),W('Add 2 to both sides','兩邊加 2','−2x means −2 × x. Undo it with ÷ (−2).','−2x 即 −2 × x，要用 ÷ (−2) 還原。')]},
-  {L:[F(['5#k','− y#y'],['2#c'])],R:['x'],n:'Multiply top and bottom by −1|分子分母同乘 −1',w:[W('Leave it, it cannot be simplified','不用化簡','It is correct, but a negative denominator is untidy. Multiply top and bottom by −1.','答案正確，但分母是負數不夠整齊。分子分母同乘 −1。'),W('Remove the minus sign from the bottom only','只刪去分母的負號','Changing only the denominator changes the value. Change top and bottom together.','只改分母會改變數值，分子分母要一起改。')]},
-  {L:['x'],R:[F(['5#k','− y#y'],['2#c'])],swap:1}]},
+ {lvl:2,subj:'x',hint:['Collect: x terms to the left, the rest to the right. Then group and divide.','集中：x 項移到左邊，其他項移到右邊。然後抽出公因式，再除。'],steps:[
+  {L:['2#c2','x#x1','+ a#a'],R:['b#b','x#x2','+ c#c']},
+  {L:['2#c2','x#x1','− b#b','x#x2'],R:['c#c','− a#a'],n:'x terms to the left, the rest to the right|x 項移到左邊，其他項移到右邊',w:[W('Divide both sides by x','兩邊除以 x','a ÷ x and c ÷ x would appear. Collect the x terms first.','這樣會出現 a ÷ x 和 c ÷ x。應先集中 x 項。'),W('Subtract 2 from both sides','兩邊減 2','2 multiplies x. It is not a separate term.','2 是乘着 x 的，不是獨立的一項。')]},
+  {L:['x#x1','(#lp','2#c2','− b#b',')#rp'],R:['c#c','− a#a'],n:'Take out the common factor x|抽出公因式 x',w:[W('Take out x, leaving x(2 + b)','抽出 x，得 x(2 + b)','The term is −bx, so −b goes in the bracket. Keep the sign.','該項是 −bx，所以括號內是 −b。要保留負號。'),W('Divide both sides by 2','兩邊除以 2','x is still in two terms. Factorize first.','x 仍在兩項之中，應先因式分解。')]},
+  {L:['x#x1'],R:[F(['c#c','− a#a'],['2#c2','− b#b'])],n:'Divide both sides by (2 − b)|兩邊除以 (2 − b)',w:[W('Divide both sides by 2','兩邊除以 2','The whole bracket (2 − b) multiplies x.','整個括號 (2 − b) 都乘着 x。'),W('Subtract (2 − b) from both sides','兩邊減 (2 − b)','x(2 − b) is a product. Undo it with division.','x(2 − b) 是乘積，要用除法還原。')]}]},
+ {lvl:2,subj:'y',hint:['Collect the y terms on the left. x has no y, so it stays where it is.','把 y 項集中在左邊。x 不含 y，可以留在原位。'],steps:[
+  {L:['a#a','y#y1'],R:['x#x','+ b#b','y#y2']},
+  {L:['a#a','y#y1','− b#b','y#y2'],R:['x#x'],n:'Subtract by from both sides|兩邊減 by',w:[W('Subtract x from both sides','兩邊減 x','x has no y. Leave it and move the y term by instead.','x 不含 y，可以不動，要移的是 y 項 by。'),W('Divide both sides by a','兩邊除以 a','y would still be on both sides. Collect the y terms first.','y 仍然在兩邊，應先集中 y 項。')]},
+  {L:['y#y1','(#lp','a#a','− b#b',')#rp'],R:['x#x'],n:'Take out the common factor y|抽出公因式 y',w:[W('Write ay − by as aby','把 ay − by 寫成 aby','ay − by is a subtraction, not a product. Take out y: y(a − b).','ay − by 是減法，不是乘積。應抽出 y：y(a − b)。'),W('Take out y, leaving y(a + b)','抽出 y，得 y(a + b)','The term is −by, so −b goes in the bracket. Keep the sign.','該項是 −by，所以括號內是 −b。要保留負號。')]},
+  {L:['y#y1'],R:[F(['x#x'],['a#a','− b#b'])],n:'Divide both sides by (a − b)|兩邊除以 (a − b)',w:[W('Divide both sides by a','兩邊除以 a','The whole bracket (a − b) multiplies y.','整個括號 (a − b) 都乘着 y。'),W('Divide both sides by x','兩邊除以 x','x is on the other side. Divide by what multiplies y: (a − b).','x 在另一邊。要除以乘着 y 的 (a − b)。')]}]},
+ {lvl:2,subj:'x',hint:['Move bx to the left. When you take out x, x = 1 × x leaves a 1.','把 bx 移到左邊。抽出 x 時，x 即 1 × x，會剩下 1。'],steps:[
+  {L:['x#x1','− a#a'],R:['b#b','x#x2']},
+  {L:['x#x1','− b#b','x#x2'],R:['a#a'],n:'Move bx to the left and a to the right|bx 移到左邊，a 移到右邊',w:[W('Add bx to both sides','兩邊加 bx','bx is positive on the right. Subtract bx to move it.','右邊的 bx 是正數，要減 bx 才能移走。'),W('Divide both sides by b','兩邊除以 b','x would still be on both sides. Collect the x terms first.','x 仍然在兩邊，應先集中 x 項。')]},
+  {L:['x#x1','(#lp','1#one','− b#b',')#rp'],R:['a#a'],n:'Take out the common factor x|抽出公因式 x',w:[W('Take out x, leaving x(−b)','抽出 x，得 x(−b)','x means 1 × x, so 1 stays in the bracket: x(1 − b).','x 即 1 × x，括號內要有 1：x(1 − b)。'),W('Divide both sides by −b','兩邊除以 −b','x is still in two terms. Factorize first.','x 仍在兩項之中，應先因式分解。')]},
+  {L:['x#x1'],R:[F(['a#a'],['1#one','− b#b'])],n:'Divide both sides by (1 − b)|兩邊除以 (1 − b)',w:[W('Subtract 1 from both sides','兩邊減 1','The 1 is inside the bracket that multiplies x.','1 在乘着 x 的括號內。'),W('Divide both sides by −b','兩邊除以 −b','The whole bracket (1 − b) multiplies x.','整個括號 (1 − b) 都乘着 x。')]}]},
+ {lvl:2,subj:'x',hint:['Expand the bracket first, then collect, group and divide.','先展開括號，然後集中、抽公因式、再除。'],steps:[
+  {L:['k#k1','(#lp','x#x1','+ 1#one',')#rp'],R:['3#c3','x#x2']},
+  {L:['k#k1','x#x1','+ k#k2'],R:['3#c3','x#x2'],n:'Expand the bracket|展開括號',w:[W('Expand to kx + 1','展開成 kx + 1','k multiplies both terms: k × 1 = k.','k 要乘括號內每一項：k × 1 = k。'),W('Divide both sides by x','兩邊除以 x','x is in more than one term. Expand and collect first.','x 不只在一項之中，應先展開和集中。')]},
+  {L:['k#k1','x#x1','− 3#c3','x#x2'],R:['− k#k2'],n:'x terms to the left, k to the right|x 項移到左邊，k 移到右邊',w:[W('Subtract k from both sides only','只在兩邊減 k','x is still on both sides. Move 3x to the left too.','x 仍然在兩邊，3x 也要移到左邊。'),W('Divide both sides by k','兩邊除以 k','x would still be on both sides. Collect the x terms first.','x 仍然在兩邊，應先集中 x 項。')]},
+  {L:['x#x1','(#lp','k#k1','− 3#c3',')#rp'],R:['− k#k2'],n:'Take out the common factor x|抽出公因式 x',w:[W('Take out x, leaving x(k + 3)','抽出 x，得 x(k + 3)','The term is −3x, so −3 goes in the bracket.','該項是 −3x，所以括號內是 −3。'),W('Combine kx − 3x into (k − 3)','把 kx − 3x 合併成 (k − 3)','You lost the x. It is x(k − 3).','漏掉了 x，應該是 x(k − 3)。')]},
+  {L:['x#x1'],R:[F(['− k#k2'],['k#k1','− 3#c3'])],n:'Divide both sides by (k − 3)|兩邊除以 (k − 3)',w:[W('Divide both sides by k','兩邊除以 k','The whole bracket (k − 3) multiplies x.','整個括號 (k − 3) 都乘着 x。'),W('Add 3 to both sides','兩邊加 3','The 3 is inside the bracket that multiplies x. Divide by the whole bracket.','3 在乘着 x 的括號內，要除以整個括號。')]},
+  {L:['x#x1'],R:[F(['k#k2'],['3#c3','− k#k1'])],n:'Multiply top and bottom by −1|分子分母同乘 −1',w:TIDY}]},
 
- {lvl:3,subj:'x',hint:['x → − b → × a → c. Undo × a first, then + b.','x → − b → × a → c。先還原 × a，再 + b。'],steps:[
-  {L:['a#a','(#lp','x','− b#b',')#rp'],R:['c']},
-  {L:['x','− b#b'],R:[F(['c'],['a#a'])],n:'Divide both sides by a|兩邊除以 a',w:[W('Add b to both sides','兩邊加 b','b is inside the bracket, which is multiplied by a. Divide by a first.','b 在括號內，而整個括號乘以 a。應先除以 a。'),W('Subtract a from both sides','兩邊減 a','a multiplies the bracket. Undo it with ÷ a.','a 乘着括號，要用 ÷ a 還原。')]},
-  {L:['x'],R:[F(['c'],['a#a']),'+ b#b'],n:'Add b to both sides|兩邊加 b',w:[W('Subtract b from both sides','兩邊減 b','To undo − b you need + b.','要還原 − b，應該 + b。'),W('Multiply both sides by a','兩邊乘以 a','That would bring the bracket back. Undo − b with + b.','這樣會把括號變回來。要用 + b 還原 − b。')]}]},
- {lvl:3,subj:'x',hint:['Clear the fraction (× c), then undo + b, then ÷ a.','先清除分數（× c），再還原 + b，最後 ÷ a。'],steps:[
-  {L:['y'],R:[F(['a#a','x','+ b#b'],['c#c'])]},
-  {L:['c#c','y'],R:['a#a','x','+ b#b'],n:'Multiply both sides by c|兩邊乘以 c',w:[W('Subtract b from both sides','兩邊減 b','b is on top of the fraction. Clear the fraction first.','b 在分子之中，應先清除分數。'),W('Divide both sides by c','兩邊除以 c','c is already dividing. Undo ÷ c with × c.','c 本身已是除數，要用 × c 還原。')]},
-  {L:['c#c','y','− b#b'],R:['a#a','x'],n:'Subtract b from both sides|兩邊減 b',w:[W('Divide both sides by a','兩邊除以 a','Then b must be divided too. Clear the b term first.','這樣 b 也要除以 a。應先處理 b 項。'),W('Add b to both sides','兩邊加 b','b is added, so subtract b to remove it.','b 是加上去的，要減 b 才能消去。')]},
-  {L:[F(['c#c','y','− b#b'],['a#a'])],R:['x'],n:'Divide both sides by a|兩邊除以 a',w:[W('Subtract a from both sides','兩邊減 a','ax means a × x. Undo with ÷ a.','ax 即 a × x，要用 ÷ a 還原。'),W('Divide both sides by c','兩邊除以 c','That would bring the fraction back.','這樣會把分數變回來。')]},
-  {L:['x'],R:[F(['c#c','y','− b#b'],['a#a'])],swap:1}]},
- {lvl:3,subj:'x',hint:['x appears twice. Collect the x terms → factorize → divide.','x 出現了兩次：集中 x 項 → 抽出公因式 → 除。'],steps:[
-  {L:['p#p','x#x1','− q#q'],R:['r#r','x#x2','+ s#s']},
-  {L:['p#p','x#x1','− r#r','x#x2'],R:['s#s','+ q#q'],n:'Put x terms on the left, the rest on the right|x 項移到左邊，其他項移到右邊',w:[W('Divide both sides by x','兩邊除以 x','x is on both sides; dividing by x does not isolate it.','兩邊都有 x，除以 x 不能使 x 單獨留下。'),W('Divide both sides by p','兩邊除以 p','x would still be on both sides. Collect the x terms first.','x 仍然在兩邊。應先把 x 項集中。')]},
-  {L:['x#x1','(#lp','p#p','− r#r',')#rp'],R:['s#s','+ q#q'],n:'Take out the common factor x|抽出公因式 x',w:[W('Divide both sides by p','兩邊除以 p','x is still in two terms. Factorize first.','x 仍在兩項之中，應先因式分解。'),W('Subtract r from both sides','兩邊減 r','r multiplies x. It is not a separate term.','r 是乘着 x 的，不是獨立的一項。')]},
-  {L:['x#x1'],R:[F(['s#s','+ q#q'],['p#p','− r#r'])],n:'Divide both sides by (p − r)|兩邊除以 (p − r)',w:[W('Divide both sides by p','兩邊除以 p','The whole bracket (p − r) multiplies x.','整個括號 (p − r) 都乘着 x。'),W('Subtract (p − r) from both sides','兩邊減 (p − r)','x(p − r) is a product. Undo it with division.','x(p − r) 是乘積，要用除法還原。')]}]},
- {lvl:3,subj:'x',hint:['x appears twice. Collect the x terms on one side → factorize → divide.','x 出現了兩次：把 x 項移到同一邊 → 抽出公因式 → 除。'],steps:[
-  {L:['3#c3','x#x1','+ a#a'],R:['b#b','x#x2']},
-  {L:['3#c3','x#x1','− b#b','x#x2'],R:['− a#a'],n:'Put x terms on the left, the rest on the right|x 項移到左邊，其他項移到右邊',w:[W('Divide both sides by x','兩邊除以 x','x is on both sides; dividing by x does not isolate it. Collect the x terms first.','兩邊都有 x，除以 x 不能使 x 單獨留下。應先把 x 項集中。'),W('Subtract 3 from both sides','兩邊減 3','3 multiplies x. It is not a separate term.','3 是乘着 x 的，不是獨立的一項。')]},
-  {L:['x#x1','(#lp','3#c3','− b#b',')#rp'],R:['− a#a'],n:'Take out the common factor x|抽出公因式 x',w:[W('Divide both sides by 3','兩邊除以 3','Then bx ÷ 3 appears, and x is still in two terms. Factorize first.','這樣會出現 bx ÷ 3，x 仍在兩項之中。應先因式分解。'),W('Subtract bx from both sides again','兩邊再減 bx','That is already done. Now combine 3x − bx into one term.','這一步已經做了。現在要把 3x − bx 合成一項。')]},
-  {L:['x#x1'],R:[F(['− a#a'],['3#c3','− b#b'])],n:'Divide both sides by (3 − b)|兩邊除以 (3 − b)',w:[W('Divide both sides by 3','兩邊除以 3','The whole bracket (3 − b) multiplies x.','整個括號 (3 − b) 都乘着 x。'),W('Subtract (3 − b) from both sides','兩邊減 (3 − b)','x(3 − b) is a product. Undo it with division.','x(3 − b) 是乘積，要用除法還原。')]},
-  {L:['x#x1'],R:[F(['a#a'],['b#b','− 3#c3'])],n:'Multiply top and bottom by −1|分子分母同乘 −1',w:[W('Leave it, it cannot be simplified','不用化簡','It is correct, but removing the minus sign from the top is tidier.','答案正確，但去掉分子的負號會更整齊。'),W('Change the sign of the top only','只改分子的正負號','Changing only the numerator changes the value.','只改分子會改變數值。')]}]},
+ {lvl:3,subj:'x',hint:['Clear the fraction (× x). Then collect the x terms and take out x.','先清除分數（× x），再集中 x 項並抽出 x。'],steps:[
+  {L:['y#y'],R:[F(['x#x1','+ 2#k2'],['x#x2'])]},
+  {L:['x#x2','y#y'],R:['x#x1','+ 2#k2'],n:'Multiply both sides by x|兩邊乘以 x',w:[W('Subtract 2 from both sides','兩邊減 2','2 is on top of the fraction. Clear the fraction first.','2 在分子之中，應先清除分數。'),W('Divide both sides by x','兩邊除以 x','x is already dividing. Undo ÷ x with × x.','x 本身已是除數，要用 × x 還原。')]},
+  {L:['x#x2','y#y','− x#x1'],R:['2#k2'],n:'Subtract x from both sides|兩邊減 x',w:[W('Divide both sides by x','兩邊除以 x','That brings the fraction back. Collect the x terms instead.','這樣會把分數變回來。應集中 x 項。'),W('Divide both sides by y','兩邊除以 y','x would still be on both sides. Collect the x terms first.','x 仍然在兩邊，應先集中 x 項。')]},
+  {L:['x#x2','(#lp','y#y','− 1#one',')#rp'],R:['2#k2'],n:'Take out the common factor x|抽出公因式 x',w:[W('Take out x, leaving x(y − 0)','抽出 x，得 x(y − 0)','x means 1 × x, so 1 stays in the bracket.','x 即 1 × x，括號內要有 1。'),W('Divide both sides by y','兩邊除以 y','x is still in two terms. Factorize first.','x 仍在兩項之中，應先因式分解。')]},
+  {L:['x#x2'],R:[F(['2#k2'],['y#y','− 1#one'])],n:'Divide both sides by (y − 1)|兩邊除以 (y − 1)',w:[W('Divide both sides by y','兩邊除以 y','The whole bracket (y − 1) multiplies x.','整個括號 (y − 1) 都乘着 x。'),W('Add 1 to both sides','兩邊加 1','The 1 is inside the bracket that multiplies x.','1 在乘着 x 的括號內。')]}]},
+ {lvl:3,subj:'x',hint:['Expand both brackets, then collect, group and divide.','展開兩邊的括號，然後集中、抽公因式、再除。'],steps:[
+  {L:['a#a1','(#lp','x#x1','− b#b1',')#rp'],R:['c#c1','(#lp2','x#x2','+ b#b2',')#rp2']},
+  {L:['a#a1','x#x1','− a#a2','b#b1'],R:['c#c1','x#x2','+ b#b2','c#c2'],n:'Expand both brackets|展開兩邊的括號',w:[W('Divide both sides by a','兩邊除以 a','x would still be on both sides, now inside a fraction. Expand first.','x 仍然在兩邊，還多了分數。應先展開。'),W('Cancel the brackets: x − b = x + b','約去括號：x − b = x + b','a and c are different, so the brackets cannot be cancelled. Expand them.','a 和 c 不同，括號不能約去，要展開。')]},
+  {L:['a#a1','x#x1','− c#c1','x#x2'],R:['b#b2','c#c2','+ a#a2','b#b1'],n:'x terms to the left, the rest to the right|x 項移到左邊，其他項移到右邊',w:[W('Divide both sides by x','兩邊除以 x','ab ÷ x and bc ÷ x would appear. Collect the x terms first.','這樣會出現 ab ÷ x 和 bc ÷ x。應先集中 x 項。'),W('Move cx to the left as +cx','把 cx 移到左邊成為 +cx','A term changes sign when it crosses the = sign: +cx becomes −cx.','一項越過等號要變號：+cx 變 −cx。')]},
+  {L:['x#x1','(#lp','a#a1','− c#c1',')#rp'],R:['b#b2','c#c2','+ a#a2','b#b1'],n:'Take out the common factor x|抽出公因式 x',w:[W('Take out x, leaving x(a + c)','抽出 x，得 x(a + c)','The term is −cx, so −c goes in the bracket.','該項是 −cx，所以括號內是 −c。'),W('Divide both sides by a','兩邊除以 a','x is still in two terms. Factorize first.','x 仍在兩項之中，應先因式分解。')]},
+  {L:['x#x1'],R:[F(['b#b2','c#c2','+ a#a2','b#b1'],['a#a1','− c#c1'])],n:'Divide both sides by (a − c)|兩邊除以 (a − c)',w:[W('Divide both sides by a','兩邊除以 a','The whole bracket (a − c) multiplies x.','整個括號 (a − c) 都乘着 x。'),W('Subtract (a − c) from both sides','兩邊減 (a − c)','x(a − c) is a product. Undo it with division.','x(a − c) 是乘積，要用除法還原。')]}]},
+ {lvl:3,subj:'x',hint:['Clear the fraction → expand → collect the x terms → take out x → divide.','清除分數 → 展開 → 集中 x 項 → 抽出 x → 除。'],steps:[
+  {L:['y#y1'],R:[F(['x#x1','− a#a'],['x#x2','+ 1#one'])]},
+  {L:['y#y1','(#lp','x#x2','+ 1#one',')#rp'],R:['x#x1','− a#a'],n:'Multiply both sides by (x + 1)|兩邊乘以 (x + 1)',w:[W('Multiply both sides by x','兩邊乘以 x','The whole denominator is (x + 1). Multiply by all of it.','整個分母是 (x + 1)，要乘以整個分母。'),W('Add a to both sides','兩邊加 a','a is on top of the fraction. Clear the fraction first.','a 在分子之中，應先清除分數。')]},
+  {L:['x#x2','y#y1','+ y#y2'],R:['x#x1','− a#a'],n:'Expand the bracket|展開括號',w:[W('Expand to xy + 1','展開成 xy + 1','y multiplies both terms: y × 1 = y.','y 要乘括號內每一項：y × 1 = y。'),W('Divide both sides by y','兩邊除以 y','That undoes the step you just did. Expand instead.','這樣只是把上一步還原。應展開括號。')]},
+  {L:['x#x2','y#y1','− x#x1'],R:['− a#a','− y#y2'],n:'x terms to the left, the rest to the right|x 項移到左邊，其他項移到右邊',w:[W('Subtract y from both sides only','只在兩邊減 y','x is still on both sides. Move x to the left too.','x 仍然在兩邊，x 也要移到左邊。'),W('Divide both sides by x','兩邊除以 x','That brings fractions back. Collect the x terms first.','這樣會再出現分數。應先集中 x 項。')]},
+  {L:['x#x2','(#lp','y#y1','− 1#one',')#rp'],R:['− a#a','− y#y2'],n:'Take out the common factor x|抽出公因式 x',w:[W('Take out x, leaving x(y − 0)','抽出 x，得 x(y − 0)','x means 1 × x, so 1 stays in the bracket.','x 即 1 × x，括號內要有 1。'),W('Take out x, leaving x(y + 1)','抽出 x，得 x(y + 1)','The term is −x, so −1 goes in the bracket.','該項是 −x，所以括號內是 −1。')]},
+  {L:['x#x2'],R:[F(['− a#a','− y#y2'],['y#y1','− 1#one'])],n:'Divide both sides by (y − 1)|兩邊除以 (y − 1)',w:[W('Divide both sides by y','兩邊除以 y','The whole bracket (y − 1) multiplies x.','整個括號 (y − 1) 都乘着 x。'),W('Add 1 to both sides','兩邊加 1','The 1 is inside the bracket that multiplies x.','1 在乘着 x 的括號內。')]},
+  {L:['x#x2'],R:[F(['a#a','+ y#y2'],['1#one','− y#y1'])],n:'Multiply top and bottom by −1|分子分母同乘 −1',w:TIDY}]},
+ {lvl:3,subj:'k',hint:['Clear the fraction, expand, then put the k terms on the left. Remember k = 1 × k.','清除分數、展開，然後把 k 項放在左邊。記住 k 即 1 × k。'],steps:[
+  {L:['m#m1'],R:[F(['y#y','− k#k1'],['x#x','− k#k2'])]},
+  {L:['m#m1','(#lp','x#x','− k#k2',')#rp'],R:['y#y','− k#k1'],n:'Multiply both sides by (x − k)|兩邊乘以 (x − k)',w:[W('Multiply both sides by x','兩邊乘以 x','The whole denominator is (x − k). Multiply by all of it.','整個分母是 (x − k)，要乘以整個分母。'),W('Add k to both sides','兩邊加 k','k is also in the denominator. Clear the fraction first.','分母也有 k，應先清除分數。')]},
+  {L:['m#m1','x#x','− m#m2','k#k2'],R:['y#y','− k#k1'],n:'Expand the bracket|展開括號',w:[W('Expand to mx − k','展開成 mx − k','m multiplies both terms: m × (−k) = −mk.','m 要乘括號內每一項：m × (−k) = −mk。'),W('Divide both sides by m','兩邊除以 m','That undoes the step you just did. Expand instead.','這樣只是把上一步還原。應展開括號。')]},
+  {L:['k#k1','− m#m2','k#k2'],R:['y#y','− m#m1','x#x'],n:'k terms to the left, the rest to the right|k 項移到左邊，其他項移到右邊',w:[W('Move −k to the left, keeping it as −k','把 −k 移到左邊，仍寫成 −k','A term changes sign when it crosses the = sign: −k becomes +k.','一項越過等號要變號：−k 變 +k。'),W('Divide both sides by k','兩邊除以 k','k is in more than one term. Collect the k terms first.','k 不只在一項之中，應先集中 k 項。')]},
+  {L:['k#k1','(#lp','1#one','− m#m2',')#rp'],R:['y#y','− m#m1','x#x'],n:'Take out the common factor k|抽出公因式 k',w:[W('Take out k, leaving k(0 − m)','抽出 k，得 k(0 − m)','k means 1 × k, so 1 stays in the bracket.','k 即 1 × k，括號內要有 1。'),W('Take out k, leaving k(1 + m)','抽出 k，得 k(1 + m)','The term is −mk, so −m goes in the bracket.','該項是 −mk，所以括號內是 −m。')]},
+  {L:['k#k1'],R:[F(['y#y','− m#m1','x#x'],['1#one','− m#m2'])],n:'Divide both sides by (1 − m)|兩邊除以 (1 − m)',w:[W('Subtract 1 from both sides','兩邊減 1','The 1 is inside the bracket that multiplies k.','1 在乘着 k 的括號內。'),W('Divide both sides by −m','兩邊除以 −m','The whole bracket (1 − m) multiplies k.','整個括號 (1 − m) 都乘着 k。')]}]}
 ];
-const LV={1:['Level 1','第一級','Basic · one or two steps','基礎 · 一至兩步'],2:['Level 2','第二級','Further · fractions, π, signs','進階 · 分數、π、正負號'],3:['Level 3','第三級','Challenge · brackets, x twice','挑戰 · 括號、x 出現兩次']};
+P.forEach(p=>{p.steps[p.steps.length-1].fin=1;});
+const LV={1:['Level 1','第一級','Group · take out the common factor','抽公因式'],2:['Level 2','第二級','Collect & group · both sides, brackets','集中同類項 · 兩邊、括號'],3:['Level 3','第三級','Challenge · fractions, brackets','挑戰 · 分數、括號']};
 
 const split=n=>{const [en,zh]=(n||'').split('|');return {en,zh};};
 const noteHTML=n=>{if(!n)return L('Given','已知');const {en,zh}=split(n);return L(en,zh);};
@@ -535,7 +520,7 @@ function bookLine(st,i,last){const {en,zh}=split(st.n);
 /* ---------- tabs ---------- */
 const tabs=[...document.querySelectorAll('.tab')];
 function openTab(id){tabs.forEach(t=>{const on=t.dataset.tab===id;t.setAttribute('aria-selected',on);$('#'+t.dataset.tab).hidden=!on;});
-  if(id==='examples')exShow(false);if(id==='practice')prRender(false);}
+  if(id==='ideas')gShow(false);if(id==='examples')exShow(false);if(id==='practice')prRender(false);}
 tabs.forEach(t=>t.onclick=()=>openTab(t.dataset.tab));
 
 /* ---------- examples controller ---------- */
@@ -563,8 +548,8 @@ $('#exPlay').onclick=()=>{if(ex.timer){stopPlay();return;}
   ex.timer=setInterval(()=>{if(ex.s>=EX[ex.i].steps.length-1){stopPlay();return;}ex.s++;exShow(true);},2400);};
 
 /* ---------- practice controller ---------- */
-let solved=new Set();try{solved=new Set(JSON.parse(localStorage.getItem('cos-solved')||'[]'));}catch(e){}
-const saveSolved=()=>{try{localStorage.setItem('cos-solved',JSON.stringify([...solved]));}catch(e){}};
+let solved=new Set();try{solved=new Set(JSON.parse(localStorage.getItem('cos-lt-solved')||'[]'));}catch(e){}
+const saveSolved=()=>{try{localStorage.setItem('cos-lt-solved',JSON.stringify([...solved]));}catch(e){}};
 const pr={lvl:1,q:0,s:0,opts:[],busy:false,first:0,tries:0,missed:false};
 const prStage=$('#prStage');
 const qsOf=l=>P.map((p,i)=>({p,i})).filter(o=>o.p.lvl===l);
@@ -615,46 +600,35 @@ $('#prShow').onclick=()=>{if(pr.busy)return;const it=P[pr.q];pr.busy=true;
   const tick=()=>{if(pr.s>=it.steps.length-1){pr.busy=false;finish();return;}pr.s++;prRender(true);setTimeout(tick,1600);};tick();};
 pr.q=qsOf(1)[0].i;
 
-/* ---------- balance ---------- */
-const bal={th:0,L:[],R:[],raf:0,done:false};
-const NS='http://www.w3.org/2000/svg';
-function blk(g,cls,x,y,w,h,label){const b=document.createElementNS(NS,'g');b.setAttribute('class','blk '+cls);
-  b.innerHTML=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3"/><text x="${x+w/2}" y="${y+h/2}">${label}</text>`;g.appendChild(b);return b;}
-function balBuild(){const pl=$('#panL'),pr_=$('#panR');
-  const pan=`<line class="str" x1="0" y1="0" x2="-46" y2="72"/><line class="str" x1="0" y1="0" x2="46" y2="72"/><rect class="plate" x="-52" y="72" width="104" height="5" rx="2"/>`;
-  pl.innerHTML=pan;pr_.innerHTML=pan;
-  bal.L=[];bal.R=[];
-  blk(pl,'xbox',-44,36,36,36,'x');
-  [[-2,56],[16,56],[-2,38]].forEach(([x,y])=>bal.L.push(blk(pl,'unit',x,y,16,16,'1')));
-  [[-36,56],[-18,56],[0,56],[18,56],[-27,38],[-9,38],[9,38]].forEach(([x,y])=>bal.R.push(blk(pr_,'unit',x,y,16,16,'1')));
-  bal.th=0;bal.done=false;balDraw();
-  $('#balEq').innerHTML='<i>x</i> + 3 = 7';$('#balV').className='verdict';$('#balV').innerHTML=L('Balanced: both sides weigh the same.','平衡：兩邊重量相同。');
-  $('#balBoth').disabled=$('#balLeft').disabled=false;}
-function balDraw(){const t=bal.th*Math.PI/180,c=Math.cos(t),s=Math.sin(t);
-  $('#beamG').setAttribute('transform',`rotate(${bal.th} 180 80)`);
-  $('#panL').setAttribute('transform',`translate(${180-118*c} ${80-118*s})`);
-  $('#panR').setAttribute('transform',`translate(${180+118*c} ${80+118*s})`);}
-function balTo(target){cancelAnimationFrame(bal.raf);const from=bal.th,t0=performance.now(),d=reduce?1:900;
-  const step=now=>{const k=Math.min(1,(now-t0)/d),e=1-Math.pow(1-k,3);bal.th=from+(target-from)*e;balDraw();if(k<1)bal.raf=requestAnimationFrame(step);};bal.raf=requestAnimationFrame(step);}
-function take(both){if(bal.done)return;bal.done=true;$('#balBoth').disabled=$('#balLeft').disabled=true;
-  bal.L.forEach(b=>b.classList.add('gone'));if(both)bal.R.slice(4).forEach(b=>b.classList.add('gone'));
-  setTimeout(()=>{if(both){$('#balEq').innerHTML='<i>x</i> = 4';$('#balV').className='verdict ok';$('#balV').innerHTML='✔ '+L('Still balanced, so x = 4.','仍然平衡，所以 x = 4。');balTo(0);}
-    else{$('#balEq').innerHTML='<i>x</i> <span style="color:var(--pen)">≠</span> 7';$('#balV').className='verdict bad';$('#balV').innerHTML='✘ '+L('Not balanced! Changing one side only breaks the equation.','不平衡！只改變一邊，等式便不再成立。');balTo(13);}},450);}
-$('#balBoth').onclick=()=>take(true);$('#balLeft').onclick=()=>take(false);$('#balReset').onclick=balBuild;
-balBuild();
+/* ---------- like-term sorter ---------- */
+const SORT=[{s:'x',t:['ax*','+ 5','=','3x*','− b']},{s:'x',t:['xy*','− 2y','=','x*','+ 7']},{s:'k',t:['pk*','+ q','=','k*','− pq']},{s:'y',t:['3y*','− x','=','a','+ by*']}];
+const so={i:0};
+function sortRender(){const it=SORT[so.i];
+  $('#sortAsk').innerHTML=L(`Tap every term that contains <i>${it.s}</i>.`,`點選所有含有 <i>${it.s}</i> 的項。`);
+  $('#sortTerms').innerHTML=it.t.map((t,k)=>t==='='?'<span class="teq">=</span>':`<button class="term" data-k="${k}" aria-pressed="false">${fmt(t.replace('*',''))}</button>`).join('');
+  $('#sortV').className='verdict';$('#sortV').innerHTML='';}
+$('#sortTerms').onclick=e=>{const b=e.target.closest('.term');if(!b)return;b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true');b.classList.remove('good','bad');};
+$('#sortCheck').onclick=()=>{const it=SORT[so.i];let miss=0,extra=0;
+  document.querySelectorAll('#sortTerms .term').forEach(b=>{const yes=it.t[+b.dataset.k].endsWith('*'),on=b.getAttribute('aria-pressed')==='true';
+    b.classList.toggle('good',yes&&on);b.classList.toggle('bad',on&&!yes);if(yes&&!on)miss++;if(on&&!yes)extra++;});
+  const v=$('#sortV'),s=`<i>${it.s}</i>`;
+  if(!miss&&!extra){v.className='verdict ok';v.innerHTML='✔ '+L(`Yes! These are the like terms in ${s}. Collect them on one side.`,`正確！這些是 ${s} 的同類項，要集中在同一邊。`);}
+  else if(extra){v.className='verdict bad';v.innerHTML='✘ '+L(`A red-ringed term has no ${s} in it, so it is not a like term.`,`紅圈的項不含 ${s}，不是同類項。`);}
+  else{v.className='verdict bad';v.innerHTML='✘ '+L(`You missed one. Every term with ${s} counts, even ${s} on its own.`,`還漏了一項。所有含 ${s} 的項都算，單獨一個 ${s} 也算。`);}};
+$('#sortNext').onclick=()=>{so.i=(so.i+1)%SORT.length;sortRender();};
+sortRender();
 
-/* ---------- machine ---------- */
-const ball=$('#ball');let mBusy=false;
-function centre(el){const m=$('#mach').getBoundingClientRect(),r=el.getBoundingClientRect();return [r.left-m.left+r.width/2,r.top-m.top+r.height/2];}
-function run(ids,vals){if(mBusy)return;mBusy=true;ball.style.transition='none';
-  let [x,y]=centre($('#'+ids[0]));ball.style.transform=`translate(${x}px,${y-30}px)`;ball.textContent=vals[0];ball.style.opacity=1;
-  void ball.offsetWidth;ball.style.transition='';let k=1;
-  const go=()=>{if(k>=ids.length){setTimeout(()=>{mBusy=false;},300);return;}
-    const [cx,cy]=centre($('#'+ids[k]));ball.style.transform=`translate(${cx}px,${cy-30}px)`;
-    const v=vals[k];setTimeout(()=>{ball.textContent=v;$('#'+ids[k]).animate([{transform:'scale(1.15)'},{transform:'none'}],{duration:300});k++;go();},reduce?50:700);};
-  setTimeout(go,300);}
-$('#runF').onclick=()=>run(['m0','m1','m2','m3'],[2,6,11,11]);
-$('#runB').onclick=()=>run(['r0','r1','r2','r3'],[11,6,2,2]);
+/* ---------- grouping board ---------- */
+const G=[
+ {L:['a#a','x#x1','− c#c','x#x2'],R:['d#d'],n:['Two <i>x</i> terms: <i>ax</i> and −<i>cx</i>','兩個 <i>x</i> 項：<i>ax</i> 和 −<i>cx</i>']},
+ {L:['x#x1','(#lp','a#a','− c#c',')#rp'],R:['d#d'],n:['Take out the common factor <i>x</i>','抽出公因式 <i>x</i>']},
+ {L:['x#x1'],R:[F(['d#d'],['a#a','− c#c'])],n:['Divide both sides by (<i>a</i> − <i>c</i>)','兩邊除以 (<i>a</i> − <i>c</i>)']}];
+const g={s:0};
+function gShow(anim){const st=G[g.s];paint($('#grpStage'),st,anim);$('#grpNote').innerHTML=L(st.n[0],st.n[1]);
+  $('#grpBack').disabled=g.s===0;$('#grpNext').disabled=g.s===G.length-1;}
+$('#grpNext').onclick=()=>{if(g.s<G.length-1){g.s++;gShow(true);}};
+$('#grpBack').onclick=()=>{if(g.s>0){g.s--;gShow(true);}};
+gShow(false);
 
 /* ---------- start ---------- */
 const h=(location.hash||'').slice(1);
